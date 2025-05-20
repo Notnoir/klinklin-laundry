@@ -1,5 +1,11 @@
 package LaundryWeb.KlinKlin.repository;
 
-public class TransaksiRepository {
-    
+import LaundryWeb.KlinKlin.model.Transaksi;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+public interface TransaksiRepository extends JpaRepository<Transaksi, String> {
+    List<Transaksi> findAllByDeletedAtIsNull();
+
+    List<Transaksi> findByPelanggan_IdAndDeletedAtIsNull(String pelangganId);
 }
