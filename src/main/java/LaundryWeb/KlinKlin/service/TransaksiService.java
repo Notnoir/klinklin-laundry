@@ -1,39 +1,67 @@
 package LaundryWeb.KlinKlin.service;
 
+import LaundryWeb.KlinKlin.dto.TransaksiDTO;
+import LaundryWeb.KlinKlin.model.Layanan;
 import LaundryWeb.KlinKlin.model.Transaksi;
+import LaundryWeb.KlinKlin.model.User;
+import LaundryWeb.KlinKlin.repository.LayananRepository;
 import LaundryWeb.KlinKlin.repository.TransaksiRepository;
-import lombok.RequiredArgsConstructor;
+import LaundryWeb.KlinKlin.repository.UserRepository;
+import LaundryWeb.KlinKlin.util.MapperUtil;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class TransaksiService {
 
-    private final TransaksiRepository transaksiRepository;
+    @Autowired
+    private TransaksiRepository transaksiRepository;
 
-    public List<Transaksi> getAll() {
-        return transaksiRepository.findAllByDeletedAtIsNull();
-    }
+    @Autowired
+    private UserRepository userRepository;
 
-    public Optional<Transaksi> getById(String id) {
-        return transaksiRepository.findById(id)
-                .filter(t -> t.getDeletedAt() == null);
-    }
+    @Autowired
+    private LayananRepository layananRepository;
 
-    public Transaksi save(Transaksi transaksi) {
-        transaksi.setId(UUID.randomUUID().toString());
+    public TransaksiDTO save(TransaksiDTO dto) {
+        User pelanggan = null;
+        if (dto.getPelangganId() != null && !dto.getPelangganId().isEmpty()) {
+            pelanggan = userRepository.findById(dto.getPelangganId())
+                    .orElseThrow(() -> new RuntimeException("Pelanggan tidak ditemukan"));
+        }
+
+        User kasir = userRepository.findById(dto.getKasirId())
+                .orElseThrow(() -> new RuntimeException("Kasir tidak ditemukan"));
+        Layanan layanan = layananRepository.findById(dto.getLayananId())
+                .orElseThrow(() -> new RuntimeException("Layanan tidak ditemukan"));
+
+        Transaksi transaksi = MapperUtil.toEntity(dto, pelanggan, kasir, layanan);
         transaksi.setTanggalTransaksi(LocalDateTime.now());
-        return transaksiRepository.save(transaksi);
+        Transaksi saved = transaksiRepository.save(transaksi);
+        return MapperUtil.toDTO(saved);
     }
 
-    public void softDelete(String id) {
-        transaksiRepository.findById(id).ifPresent(t -> {
-            t.setDeletedAt(LocalDateTime.now());
-            transaksiRepository.save(t);
+    public TransaksiDTO findById(String id) {
+        return transaksiRepository.findById(id)
+                .map(MapperUtil::toDTO)
+                .orElse(null);
+    }
+
+    public List<TransaksiDTO> findAll() {
+        return transaksiRepository.findAll()
+                .stream()
+                .map(MapperUtil::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public void deleteById(String id) {
+        transaksiRepository.findById(id).ifPresent(transaksi -> {
+            transaksi.setDeletedAt(LocalDateTime.now());
+            transaksiRepository.save(transaksi);
         });
     }
 }

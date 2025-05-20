@@ -1,37 +1,53 @@
 package LaundryWeb.KlinKlin.service;
 
+import LaundryWeb.KlinKlin.dto.FeedbackDTO;
 import LaundryWeb.KlinKlin.model.Feedback;
+import LaundryWeb.KlinKlin.model.User;
 import LaundryWeb.KlinKlin.repository.FeedbackRepository;
-import lombok.RequiredArgsConstructor;
+import LaundryWeb.KlinKlin.repository.UserRepository;
+import LaundryWeb.KlinKlin.util.MapperUtil;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class FeedbackService {
 
-    private final FeedbackRepository feedbackRepository;
+    @Autowired
+    private FeedbackRepository feedbackRepository;
 
-    public List<Feedback> getAll() {
-        return feedbackRepository.findAllByDeletedAtIsNull();
+    @Autowired
+    private UserRepository userRepository;
+
+    public FeedbackDTO save(FeedbackDTO dto) {
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User tidak ditemukan"));
+
+        Feedback feedback = MapperUtil.toEntity(dto, user);
+        Feedback saved = feedbackRepository.save(feedback);
+        return MapperUtil.toDTO(saved);
     }
 
-    public List<Feedback> getByUserId(String userId) {
-        return feedbackRepository.findByUser_IdAndDeletedAtIsNull(userId);
+    public FeedbackDTO findById(String id) {
+        return feedbackRepository.findById(id)
+                .map(MapperUtil::toDTO)
+                .orElse(null);
     }
 
-    public Feedback save(Feedback feedback) {
-        feedback.setId(UUID.randomUUID().toString());
-        feedback.setTanggalFeedback(LocalDateTime.now());
-        return feedbackRepository.save(feedback);
+    public List<FeedbackDTO> findAll() {
+        return feedbackRepository.findAll()
+                .stream()
+                .map(MapperUtil::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public void softDelete(String id) {
-        feedbackRepository.findById(id).ifPresent(f -> {
-            f.setDeletedAt(LocalDateTime.now());
-            feedbackRepository.save(f);
+    public void deleteById(String id) {
+        feedbackRepository.findById(id).ifPresent(feedback -> {
+            feedback.setDeletedAt(LocalDateTime.now());
+            feedbackRepository.save(feedback);
         });
     }
 }

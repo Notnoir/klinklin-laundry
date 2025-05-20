@@ -1,50 +1,46 @@
 package LaundryWeb.KlinKlin.service;
 
+import LaundryWeb.KlinKlin.dto.PembayaranDTO;
 import LaundryWeb.KlinKlin.model.Pembayaran;
 import LaundryWeb.KlinKlin.model.Transaksi;
-import LaundryWeb.KlinKlin.repository.PaymentHistoryRepository;
 import LaundryWeb.KlinKlin.repository.PembayaranRepository;
-import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
+
 import LaundryWeb.KlinKlin.repository.TransaksiRepository;
-import java.util.Optional;
+import LaundryWeb.KlinKlin.util.MapperUtil;
 
 @Service
-@RequiredArgsConstructor
 public class PembayaranService {
-    private final PembayaranRepository pembayaranRepository;
-    private final TransaksiRepository transaksiRepository;
-    private final PaymentHistoryRepository paymentHistoryRepository;
 
-    public Pembayaran buatPembayaran(String transaksiId, BigDecimal totalBayar) {
-        Transaksi transaksi = transaksiRepository.findById(transaksiId)
-                .filter(t -> t.getDeletedAt() == null)
+    @Autowired
+    private PembayaranRepository pembayaranRepository;
+
+    @Autowired
+    private TransaksiRepository transaksiRepository;
+
+    public PembayaranDTO save(PembayaranDTO dto) {
+        Transaksi transaksi = transaksiRepository.findById(dto.getTransaksiId())
                 .orElseThrow(() -> new RuntimeException("Transaksi tidak ditemukan"));
 
-        // Validasi: apakah sudah pernah dibayar
-        List<Pembayaran> existing = pembayaranRepository.findByTransaksi_Id(transaksiId);
-        if (!existing.isEmpty()) {
-            throw new RuntimeException("Transaksi ini sudah memiliki pembayaran");
-        }
-
-        Pembayaran pembayaran = new Pembayaran();
-        pembayaran.setId(UUID.randomUUID().toString());
-        pembayaran.setTransaksi(transaksi);
-        pembayaran.setTotalBayar(totalBayar);
-        pembayaran.setWaktuBayar(LocalDateTime.now());
-
-        return pembayaranRepository.save(pembayaran);
+        Pembayaran pembayaran = MapperUtil.toEntity(dto, transaksi);
+        Pembayaran saved = pembayaranRepository.save(pembayaran);
+        return MapperUtil.toDTO(saved);
     }
 
-    public List<Pembayaran> getByTransaksi(String transaksiId) {
-        return pembayaranRepository.findByTransaksi_Id(transaksiId);
+    public PembayaranDTO findById(String id) {
+        return pembayaranRepository.findById(id)
+                .map(MapperUtil::toDTO)
+                .orElse(null);
     }
 
-    public Optional<Pembayaran> getById(String id) {
-        return pembayaranRepository.findById(id);
+    public List<PembayaranDTO> findAll() {
+        return pembayaranRepository.findAll()
+                .stream()
+                .map(MapperUtil::toDTO)
+                .collect(Collectors.toList());
     }
 }

@@ -2,35 +2,70 @@ package LaundryWeb.KlinKlin.service;
 
 import LaundryWeb.KlinKlin.model.User;
 import LaundryWeb.KlinKlin.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import LaundryWeb.KlinKlin.dto.UserDTO;
+import LaundryWeb.KlinKlin.util.MapperUtil;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public List<User> getAllActiveUsers() {
-        return userRepository.findAllByDeletedAtIsNull();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public UserDTO save(UserDTO userDto) {
+        User user = MapperUtil.toEntity(userDto);
+
+        // Hash password sebelum simpan
+        String hashedPassword = passwordEncoder.encode(userDto.getPassword());
+        user.setPassword(hashedPassword);
+
+        User savedUser = userRepository.save(user);
+        return MapperUtil.toDTO(savedUser);
     }
 
-    public Optional<User> getById(String id) {
+    public UserDTO findById(String id) {
         return userRepository.findById(id)
-                .filter(user -> user.getDeletedAt() == null);
+                .map(MapperUtil::toDTO)
+                .orElse(null);
     }
 
-    public User save(User user) {
-        user.setId(UUID.randomUUID().toString());
-        user.setCreatedAt(LocalDateTime.now());
-        return userRepository.save(user);
+    public List<UserDTO> findAll() {
+        return userRepository.findAll()
+                .stream()
+                .map(MapperUtil::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public void softDelete(String id) {
+    public UserDTO update(String id, UserDTO userDto) {
+        return userRepository.findById(id)
+                .map(existingUser -> {
+                    // Update field yang boleh diubah, contoh:
+                    existingUser.setFullName(userDto.getFullName());
+                    existingUser.setEmail(userDto.getEmail());
+                    existingUser.setUsername(userDto.getUsername());
+                    existingUser.setRole(userDto.getRole());
+                    // Kalau password ingin update, harus hashing dulu (contoh di bawah):
+                    if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
+                        // Misal pakai BCryptPasswordEncoder
+                        String hashedPassword = passwordEncoder.encode(userDto.getPassword());
+                        existingUser.setPassword(hashedPassword);
+                    }
+                    User saved = userRepository.save(existingUser);
+                    return MapperUtil.toDTO(saved);
+                })
+                .orElseThrow(() -> new RuntimeException("User dengan id " + id + " tidak ditemukan"));
+    }
+
+    public void deleteById(String id) {
         userRepository.findById(id).ifPresent(user -> {
             user.setDeletedAt(LocalDateTime.now());
             userRepository.save(user);

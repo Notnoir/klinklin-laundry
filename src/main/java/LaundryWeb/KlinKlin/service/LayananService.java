@@ -1,38 +1,46 @@
 package LaundryWeb.KlinKlin.service;
 
+import LaundryWeb.KlinKlin.dto.LayananDTO;
 import LaundryWeb.KlinKlin.model.Layanan;
 import LaundryWeb.KlinKlin.repository.LayananRepository;
-import lombok.RequiredArgsConstructor;
+import LaundryWeb.KlinKlin.util.MapperUtil;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class LayananService {
 
-    private final LayananRepository layananRepository;
+    @Autowired
+    private LayananRepository layananRepository;
 
-    public List<Layanan> getAllActive() {
-        return layananRepository.findAllByDeletedAtIsNull();
+    public LayananDTO save(LayananDTO dto) {
+        Layanan layanan = MapperUtil.toEntity(dto);
+        Layanan saved = layananRepository.save(layanan);
+        return MapperUtil.toDTO(saved);
     }
 
-    public Optional<Layanan> getById(String id) {
+    public LayananDTO findById(String id) {
         return layananRepository.findById(id)
-                .filter(l -> l.getDeletedAt() == null);
+                .map(MapperUtil::toDTO)
+                .orElse(null);
     }
 
-    public Layanan save(Layanan layanan) {
-        layanan.setId(UUID.randomUUID().toString());
-        return layananRepository.save(layanan);
+    public List<LayananDTO> findAll() {
+        return layananRepository.findAll()
+                .stream()
+                .map(MapperUtil::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public void softDelete(String id) {
-        layananRepository.findById(id).ifPresent(l -> {
-            l.setDeletedAt(LocalDateTime.now());
-            layananRepository.save(l);
+    public void deleteById(String id) {
+        layananRepository.findById(id).ifPresent(layanan -> {
+            layanan.setDeletedAt(LocalDateTime.now());
+            layananRepository.save(layanan);
         });
     }
+
 }

@@ -1,3 +1,10 @@
+body {
+  font-family: "Nunito", sans-serif;
+  /* font-optical-sizing: auto;
+  font-weight: 1000;
+  font-style: normal; */
+}
+
 /* Custom styles for the bubbles */
 .bubble-container {
   position: absolute;

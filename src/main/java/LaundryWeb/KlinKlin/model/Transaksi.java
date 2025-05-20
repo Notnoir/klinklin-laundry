@@ -11,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "transaksi")
@@ -20,8 +22,8 @@ public class Transaksi {
     @Column(length = 36)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "pelanggan_id")
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "pelanggan_id", nullable = true)
     private User pelanggan;
 
     private String namaPelanggan;
@@ -30,10 +32,14 @@ public class Transaksi {
     @JoinColumn(name = "layanan_id", nullable = false)
     private Layanan layanan;
 
+    @DecimalMin(value = "0.1", message = "Berat tidak boleh nol")
     private BigDecimal beratKg;
 
+    @NotNull(message = "Total tidak boleh kosong")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Total harus lebih dari 0")
     private BigDecimal total;
 
+    @NotNull(message = "Status wajib diisi")
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -130,4 +136,3 @@ public class Transaksi {
         this.deletedAt = deletedAt;
     }
 }
-
