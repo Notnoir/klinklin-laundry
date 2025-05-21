@@ -19,7 +19,7 @@ public class UserDTO {
     @NotBlank(message = "Username wajib diisi")
     private String username;
 
-    @NotBlank(message = "Password wajib diisi")
+    // @NotBlank(message = "Password wajib diisi")
     @Size(min = 6, message = "Password minimal 6 karakter")
     private String password;
 

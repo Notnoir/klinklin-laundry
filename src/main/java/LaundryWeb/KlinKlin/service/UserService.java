@@ -39,7 +39,7 @@ public class UserService {
     }
 
     public List<UserDTO> findAll() {
-        return userRepository.findAll()
+        return userRepository.findAllByDeletedAtIsNull()
                 .stream()
                 .map(MapperUtil::toDTO)
                 .collect(Collectors.toList());
@@ -53,6 +53,7 @@ public class UserService {
                     existingUser.setEmail(userDto.getEmail());
                     existingUser.setUsername(userDto.getUsername());
                     existingUser.setRole(userDto.getRole());
+
                     // Kalau password ingin update, harus hashing dulu (contoh di bawah):
                     if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
                         // Misal pakai BCryptPasswordEncoder

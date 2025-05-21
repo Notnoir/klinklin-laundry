@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Detail Transaksi</title>
+  </head>
+  <body>
+    <h1>Detail Transaksi</h1>
+    <p><strong>ID:</strong> <span th:text="${transaksi.id}"></span></p>
+    <p>
+      <strong>Nama Pelanggan:</strong>
+      <span th:text="${transaksi.namaPelanggan}"></span>
+    </p>
+    <p>
+      <strong>Layanan ID:</strong>
+      <span th:text="${transaksi.layananNama}"></span>
+    </p>
+    <p>
+      <strong>Kasir ID:</strong> <span th:text="${transaksi.kasirNama}"></span>
+    </p>
+    <p>
+      <strong>Berat:</strong> <span th:text="${transaksi.beratKg}"></span> kg
+    </p>
+    <p>
+      <strong>Total:</strong>
+      <span th:text="${transaksi.totalFormatted}"></span>
+    </p>
+    <p><strong>Status:</strong> <span th:text="${transaksi.status}"></span></p>
+    <p>
+      <strong>Tanggal:</strong>
+      <td th:text="${transaksi.tanggalTransaksiFormatted}"></td>
+    </p>
+
+    <a href="/admin/transaksi">Kembali</a>
+  </body>
+</html>

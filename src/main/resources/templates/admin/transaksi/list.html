@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Daftar Transaksi</title>
+  </head>
+  <body>
+    <h1>Daftar Transaksi</h1>
+    <a href="/admin/transaksi/create">+ Tambah Transaksi</a>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nama Pelanggan</th>
+          <th>Layanan</th>
+          <th>Berat (kg)</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Tanggal</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="transaksi : ${transaksiList}">
+          <td th:text="${transaksi.id}"></td>
+          <td th:text="${transaksi.namaPelanggan}"></td>
+          <td th:text="${transaksi.layananNama}"></td>
+          <td th:text="${transaksi.beratKg}"></td>
+          <td th:text="${transaksi.totalFormatted}"></td>
+          <td th:text="${transaksi.status}"></td>
+          <td th:text="${transaksi.tanggalTransaksiFormatted}"></td>
+
+          <td>
+            <a th:href="@{'/admin/transaksi/' + ${transaksi.id}}">Detail</a> |
+            <a
+              th:href="@{'/admin/transaksi/delete/' + ${transaksi.id}}"
+              onclick="return confirm('Yakin ingin menghapus transaksi ini?')"
+              >Hapus</a
+            >
+            |
+            <a th:href="@{'/admin/transaksi/edit/' + ${transaksi.id}}">Edit</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

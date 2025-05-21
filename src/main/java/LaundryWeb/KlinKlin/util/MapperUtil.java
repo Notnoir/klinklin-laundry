@@ -5,6 +5,8 @@ import LaundryWeb.KlinKlin.model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.UUID;
 
 public class MapperUtil {
@@ -62,6 +64,7 @@ public class MapperUtil {
         return dto;
     }
 
+    // transaksi
     public static Transaksi toEntity(TransaksiDTO dto, User pelanggan, User kasir, Layanan layanan) {
         if (dto == null)
             return null;
@@ -119,6 +122,8 @@ public class MapperUtil {
         dto.setTotal(t.getTotal());
         dto.setStatus(t.getStatus() != null ? t.getStatus().name() : null);
         dto.setTanggalTransaksi(t.getTanggalTransaksi());
+        dto.setLayananNama(t.getLayanan() != null ? t.getLayanan().getNamaLayanan() : null);
+        dto.setKasirNama(t.getKasir() != null ? t.getKasir().getFullName() : null);
 
         return dto;
     }
@@ -194,6 +199,19 @@ public class MapperUtil {
         dto.setKomentar(feedback.getKomentar());
         dto.setTanggalFeedback(feedback.getTanggalFeedback());
         return dto;
+    }
+
+    public static String formatTanggal(LocalDateTime tanggal) {
+        if (tanggal == null)
+            return "-";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", new Locale("id", "ID"));
+        return tanggal.format(formatter);
+    }
+
+    public static String formatRupiah(BigDecimal amount) {
+        if (amount == null)
+            return "Rp 0";
+        return String.format("Rp %,d", amount).replace(',', '.');
     }
 
 }

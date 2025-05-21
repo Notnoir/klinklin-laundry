@@ -1,8 +1,10 @@
 package LaundryWeb.KlinKlin.dto;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
+import LaundryWeb.KlinKlin.util.MapperUtil;
 import lombok.Data;
 import jakarta.validation.constraints.NotNull;
 
@@ -29,4 +31,21 @@ public class TransaksiDTO {
     private String status; // enum: DITERIMA, DICUCI, dll (bisa di-set default di backend)
 
     private LocalDateTime tanggalTransaksi;
+
+    private transient String tanggalTransaksiFormatted;
+
+    private String layananNama;
+    private String kasirNama;
+
+    public String getTanggalTransaksiFormatted() {
+        return MapperUtil.formatTanggal(this.tanggalTransaksi);
+    }
+
+    public String getTotalFormatted() {
+        if (total == null)
+            return "Rp 0";
+        DecimalFormat formatter = new DecimalFormat("#,##0");
+        return "Rp " + formatter.format(total).replace(',', '.').replace('.', ',');
+    }
+
 }

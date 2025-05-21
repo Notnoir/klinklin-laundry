@@ -39,6 +39,15 @@ public class TransaksiService {
         Layanan layanan = layananRepository.findById(dto.getLayananId())
                 .orElseThrow(() -> new RuntimeException("Layanan tidak ditemukan"));
 
+        // ✅ Tambahkan logika pengisian otomatis
+        if (dto.getTotal() == null) {
+            dto.setTotal(layanan.getHargaPerKg().multiply(dto.getBeratKg()));
+        }
+
+        if (dto.getStatus() == null || dto.getStatus().isEmpty()) {
+            dto.setStatus("DITERIMA");
+        }
+
         Transaksi transaksi = MapperUtil.toEntity(dto, pelanggan, kasir, layanan);
         transaksi.setTanggalTransaksi(LocalDateTime.now());
         Transaksi saved = transaksiRepository.save(transaksi);
@@ -52,10 +61,52 @@ public class TransaksiService {
     }
 
     public List<TransaksiDTO> findAll() {
-        return transaksiRepository.findAll()
+        return transaksiRepository.findAllByDeletedAtIsNull()
                 .stream()
                 .map(MapperUtil::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public TransaksiDTO update(TransaksiDTO dto) {
+        Transaksi existing = transaksiRepository.findById(dto.getId())
+                .orElseThrow(() -> new RuntimeException("Transaksi tidak ditemukan"));
+
+        User pelanggan = null;
+        if (dto.getPelangganId() != null && !dto.getPelangganId().isEmpty()) {
+            pelanggan = userRepository.findById(dto.getPelangganId())
+                    .orElseThrow(() -> new RuntimeException("Pelanggan tidak ditemukan"));
+        }
+
+        User kasir = userRepository.findById(dto.getKasirId())
+                .orElseThrow(() -> new RuntimeException("Kasir tidak ditemukan"));
+
+        Layanan layanan = layananRepository.findById(dto.getLayananId())
+                .orElseThrow(() -> new RuntimeException("Layanan tidak ditemukan"));
+
+        // Hitung ulang total jika null atau berat berubah
+        boolean beratBerubah = dto.getBeratKg() != null
+                && (existing.getBeratKg() == null || !dto.getBeratKg().equals(existing.getBeratKg()));
+        boolean layananBerubah = dto.getLayananId() != null &&
+                (existing.getLayanan() == null || !dto.getLayananId().equals(existing.getLayanan().getId()));
+
+        if (dto.getTotal() == null || dto.getBeratKg() == null || beratBerubah || layananBerubah) {
+            if (dto.getBeratKg() != null) {
+                dto.setTotal(layanan.getHargaPerKg().multiply(dto.getBeratKg()));
+            } else {
+                dto.setTotal(null);
+            }
+        }
+
+        if (dto.getStatus() == null || dto.getStatus().isEmpty()) {
+            dto.setStatus(existing.getStatus() != null ? existing.getStatus().name() : null);
+        }
+
+        Transaksi updated = MapperUtil.toEntity(dto, pelanggan, kasir, layanan);
+        updated.setTanggalTransaksi(existing.getTanggalTransaksi());
+        updated.setDeletedAt(existing.getDeletedAt());
+
+        Transaksi saved = transaksiRepository.save(updated);
+        return MapperUtil.toDTO(saved);
     }
 
     public void deleteById(String id) {
