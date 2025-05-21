@@ -7,5 +7,7 @@ import java.util.List;
 public interface FeedbackRepository extends JpaRepository<Feedback, String> {
     List<Feedback> findAllByDeletedAtIsNull();
 
+    List<Feedback> findByDeletedAtIsNull();
+
     List<Feedback> findByUser_IdAndDeletedAtIsNull(String userId);
 }

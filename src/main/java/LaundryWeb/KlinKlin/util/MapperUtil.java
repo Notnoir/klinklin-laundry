@@ -173,25 +173,27 @@ public class MapperUtil {
     }
 
     // Feedback
-    public static Feedback toEntity(FeedbackDTO dto, User user) {
-        if (dto == null)
-            return null;
-        Feedback f = new Feedback();
-        f.setId(dto.getId() != null ? dto.getId() : UUID.randomUUID().toString());
-        f.setUser(user);
-        f.setKomentar(dto.getIsi()); // <-- ini yang benar
-        f.setDeletedAt(null); // misal default belum dihapus
-        f.setTanggalFeedback(LocalDateTime.now()); // bisa di-set sekarang
-        return f;
+    public static Feedback toFeedback(FeedbackDTO dto, User user, Transaksi transaksi) {
+        Feedback feedback = new Feedback();
+        feedback.setId(dto.getId());
+        feedback.setUser(user);
+        feedback.setTransaksi(transaksi);
+        feedback.setRating(dto.getRating());
+        feedback.setKomentar(dto.getKomentar());
+        feedback.setTanggalFeedback(dto.getTanggalFeedback());
+        return feedback;
     }
 
-    public static FeedbackDTO toDTO(Feedback entity) {
-        if (entity == null)
-            return null;
+    public static FeedbackDTO toFeedbackDTO(Feedback feedback) {
         FeedbackDTO dto = new FeedbackDTO();
-        dto.setId(entity.getId());
-        dto.setUserId(entity.getUser() != null ? entity.getUser().getId() : null);
-        dto.setIsi(entity.getKomentar()); // <-- ini yang benar
+        dto.setId(feedback.getId());
+        dto.setUserId(feedback.getUser().getId());
+        dto.setTransaksiId(
+                feedback.getTransaksi() != null ? feedback.getTransaksi().getId() : null);
+        dto.setRating(feedback.getRating());
+        dto.setKomentar(feedback.getKomentar());
+        dto.setTanggalFeedback(feedback.getTanggalFeedback());
         return dto;
     }
+
 }
