@@ -43,4 +43,14 @@ public class LayananService {
         });
     }
 
+    public void update(LayananDTO dto) {
+        Layanan existing = layananRepository.findById(dto.getId())
+                .orElseThrow(() -> new RuntimeException("Layanan tidak ditemukan"));
+
+        existing.setNamaLayanan(dto.getNamaLayanan());
+        existing.setHargaPerKg(dto.getHargaPerKg());
+
+        layananRepository.save(existing);
+    }
+
 }

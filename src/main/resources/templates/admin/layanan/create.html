@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tambah Layanan</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <h2>Tambah Layanan</h2>
+
+    <form
+      th:action="@{/admin/layanan/save}"
+      th:object="${layananDTO}"
+      method="post"
+    >
+      <div>
+        <label for="namaLayanan">Nama Layanan:</label>
+        <input type="text" id="namaLayanan" th:field="*{namaLayanan}" />
+        <p
+          th:if="${#fields.hasErrors('namaLayanan')}"
+          th:errors="*{namaLayanan}"
+          style="color: red"
+        ></p>
+      </div>
+
+      <div>
+        <label for="hargaPerKg">Harga per Kg:</label>
+        <input
+          type="number"
+          id="hargaPerKg"
+          th:field="*{hargaPerKg}"
+          step="0.01"
+        />
+        <p
+          th:if="${#fields.hasErrors('hargaPerKg')}"
+          th:errors="*{hargaPerKg}"
+          style="color: red"
+        ></p>
+      </div>
+
+      <div>
+        <button type="submit">Simpan</button>
+        <a th:href="@{/admin/layanan}">Batal</a>
+      </div>
+    </form>
+  </body>
+</html>

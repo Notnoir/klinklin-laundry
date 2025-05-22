@@ -1,0 +1,34 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>List Layanan</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama Layanan</th>
+          <th>Harga/Kg</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Loop through the list of layanan -->
+        <tr th:each="layanan, stat : ${listLayanan}">
+          <td th:text="${stat.index + 1}">1</td>
+          <td th:text="${layanan.namaLayanan}"></td>
+          <td th:text="${layanan.hargaPerKg}"></td>
+          <td>
+            <a th:href="@{'/admin/layanan/edit/' + ${layanan.id}}">Edit</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Link to add new layanan -->
+    <a href="/admin/layanan/create">Add New Layanan</a>
+  </body>
+</html>
