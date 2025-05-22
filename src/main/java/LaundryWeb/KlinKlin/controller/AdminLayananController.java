@@ -66,4 +66,10 @@ public class AdminLayananController {
         return "redirect:/admin/layanan";
     }
 
+    @GetMapping("/delete/{id}")
+    public String deleteLayanan(@PathVariable("id") String id) {
+        layananService.deleteById(id);
+        return "redirect:/admin/layanan";
+    }
+
 }

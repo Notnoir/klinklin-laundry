@@ -23,6 +23,11 @@
           <td th:text="${layanan.hargaPerKg}"></td>
           <td>
             <a th:href="@{'/admin/layanan/edit/' + ${layanan.id}}">Edit</a>
+            <a
+              th:href="@{'/admin/layanan/delete/' + ${layanan.id}}"
+              onclick="return confirm('Yakin ingin hapus layanan ini?')"
+              >Delete</a
+            >
           </td>
         </tr>
       </tbody>

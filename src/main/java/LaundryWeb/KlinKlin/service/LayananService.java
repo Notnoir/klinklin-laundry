@@ -30,7 +30,7 @@ public class LayananService {
     }
 
     public List<LayananDTO> findAll() {
-        return layananRepository.findAll()
+        return layananRepository.findAllByDeletedAtIsNull()
                 .stream()
                 .map(MapperUtil::toDTO)
                 .collect(Collectors.toList());
