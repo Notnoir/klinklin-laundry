@@ -13,6 +13,7 @@ import LaundryWeb.KlinKlin.service.TransaksiService;
 import LaundryWeb.KlinKlin.repository.LayananRepository;
 import LaundryWeb.KlinKlin.repository.UserRepository;
 import LaundryWeb.KlinKlin.model.User.Role;
+import LaundryWeb.KlinKlin.model.Transaksi.Status;
 
 import lombok.RequiredArgsConstructor;
 
@@ -80,6 +81,7 @@ public class AdminTransaksiController {
 
         model.addAttribute("layananList", layananList);
         model.addAttribute("kasirList", kasirList);
+        model.addAttribute("statusList", Status.values());
 
         return "admin/transaksi/edit";
     }

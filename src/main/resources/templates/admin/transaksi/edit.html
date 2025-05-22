@@ -2,11 +2,64 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Edit Transaksi</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
   </head>
   <body>
-    <div class="container mt-4">
-      <h2>Edit Transaksi</h2>
-    </div>
+    <h2>Edit Transaksi</h2>
+    <form
+      th:action="@{/admin/transaksi/update}"
+      th:object="${transaksiDTO}"
+      method="post"
+    >
+      <input type="text" th:field="*{id}" /> <br />
+      <label>Nama Akun</label>
+      <select th:field="*{pelangganId}">
+        <option value="">Tanpa Akun</option>
+        <!-- Tambahan: kosongkan jika tanpa akun -->
+        <option
+          th:each="pelanggan : ${pelangganList}"
+          th:value="${pelanggan.id}"
+          th:text="${pelanggan.fullName}"
+        ></option>
+      </select>
+      <small>Isi jika memiliki akun</small> <br />
+
+      <label>Nama Pelanggan</label>
+      <input type="text" th:field="*{namaPelanggan}" /> <br />
+      <label>Berat (Kg)</label>
+      <input type="number" th:field="*{beratKg}" step="0.01" /> <br />
+      <label>Kasir</label>
+      <select th:field="*{kasirId}">
+        <option
+          th:each="kasir : ${kasirList}"
+          th:value="${kasir.id}"
+          th:text="${kasir.fullName}"
+        >
+          Kasir
+        </option></select
+      ><br />
+      <label>Layanan</label>
+      <select th:field="*{layananId}">
+        <option
+          th:each="layanan : ${layananList}"
+          th:value="${layanan.id}"
+          th:text="${layanan.namaLayanan}"
+        >
+          Layanan
+        </option>
+      </select>
+      <br />
+      <label for="status">Status</label>
+      <select th:field="*{status}" id="status">
+        <option value="">-- Pilih Status --</option>
+        <option
+          th:each="status : ${statusList}"
+          th:value="${status.name()}"
+          th:text="${status.name()}"
+          th:selected="${status.name() == transaksiDTO.status}"
+        ></option>
+      </select>
+      <br />
+      <button type="submit">Update</button>
+    </form>
   </body>
 </html>
