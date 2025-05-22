@@ -139,18 +139,55 @@ public class MapperUtil {
         if (dto.getJumlah() != null) {
             p.setTotalBayar(BigDecimal.valueOf(dto.getJumlah()));
         }
+        if (dto.getMetodePembayaran() != null) {
+            p.setMetodePembayaran(Pembayaran.MetodePembayaran.valueOf(dto.getMetodePembayaran()));
+        }
+        if (dto.getStatus() != null) {
+            p.setStatus(Pembayaran.StatusPembayaran.valueOf(dto.getStatus()));
+        }
         return p;
     }
 
     public static PembayaranDTO toDTO(Pembayaran entity) {
         if (entity == null)
             return null;
+
         PembayaranDTO dto = new PembayaranDTO();
         dto.setId(entity.getId());
-        dto.setTransaksiId(entity.getTransaksi() != null ? entity.getTransaksi().getId() : null);
+
+        if (entity.getTransaksi() != null) {
+            Transaksi trx = entity.getTransaksi();
+            dto.setTransaksiId(trx.getId());
+
+            // Tambahan data dari transaksi
+            if (trx.getKasir() != null) {
+                dto.setNamaKasir(trx.getKasir().getFullName());
+            }
+
+            if (trx.getNamaPelanggan() != null && !trx.getNamaPelanggan().isEmpty()) {
+                dto.setNamaPelanggan(trx.getNamaPelanggan());
+            } else {
+                dto.setNamaPelanggan("Unknown");
+            }
+
+            dto.setBerat(trx.getBeratKg());
+            dto.setTanggalTransaksi(trx.getTanggalTransaksi());
+        }
+
         if (entity.getTotalBayar() != null) {
             dto.setJumlah(entity.getTotalBayar().doubleValue());
         }
+
+        if (entity.getMetodePembayaran() != null) {
+            dto.setMetodePembayaran(entity.getMetodePembayaran().name());
+        }
+
+        if (entity.getStatus() != null) {
+            dto.setStatus(entity.getStatus().name());
+        }
+
+        dto.setWaktuBayar(entity.getWaktuBayar());
+
         return dto;
     }
 
@@ -206,6 +243,13 @@ public class MapperUtil {
             return "-";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", new Locale("id", "ID"));
         return tanggal.format(formatter);
+    }
+
+    public static String formatJam(LocalDateTime waktu) {
+        if (waktu == null)
+            return "";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, HH:mm:ss", new Locale("id", "ID"));
+        return waktu.format(formatter);
     }
 
     public static String formatRupiah(BigDecimal amount) {

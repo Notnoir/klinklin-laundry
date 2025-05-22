@@ -7,7 +7,11 @@ import LaundryWeb.KlinKlin.repository.PembayaranRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import LaundryWeb.KlinKlin.repository.TransaksiRepository;
@@ -26,7 +30,59 @@ public class PembayaranService {
         Transaksi transaksi = transaksiRepository.findById(dto.getTransaksiId())
                 .orElseThrow(() -> new RuntimeException("Transaksi tidak ditemukan"));
 
-        Pembayaran pembayaran = MapperUtil.toEntity(dto, transaksi);
+        BigDecimal jumlahBayarSekarang = dto.getJumlah() != null ? BigDecimal.valueOf(dto.getJumlah())
+                : BigDecimal.ZERO;
+
+        // Cek apakah ada pembayaran BELUM_LUNAS sebelumnya untuk transaksi ini
+        Optional<Pembayaran> existingPembayaranOpt = pembayaranRepository
+                .findByTransaksiIdAndStatus(dto.getTransaksiId(), Pembayaran.StatusPembayaran.BELUM_LUNAS);
+
+        Pembayaran pembayaran;
+
+        if (existingPembayaranOpt.isPresent()) {
+            // Update pembayaran yang BELUM LUNAS
+            pembayaran = existingPembayaranOpt.get();
+
+            BigDecimal totalSebelumnya = pembayaran.getTotalBayar() != null ? pembayaran.getTotalBayar()
+                    : BigDecimal.ZERO;
+            BigDecimal totalSetelahBayar = totalSebelumnya.add(jumlahBayarSekarang);
+
+            pembayaran.setTotalBayar(totalSetelahBayar);
+            pembayaran.setWaktuBayar(LocalDateTime.now());
+
+            // Update metode pembayaran jika ada
+            if (dto.getMetodePembayaran() != null) {
+                pembayaran.setMetodePembayaran(Pembayaran.MetodePembayaran.valueOf(dto.getMetodePembayaran()));
+            }
+
+            // Update status jika sudah lunas
+            if (totalSetelahBayar.compareTo(transaksi.getTotal()) >= 0) {
+                pembayaran.setStatus(Pembayaran.StatusPembayaran.LUNAS);
+            }
+
+        } else {
+            // Buat pembayaran baru
+            pembayaran = MapperUtil.toEntity(dto, transaksi);
+
+            BigDecimal totalBayarSebelumnya = pembayaranRepository.sumTotalBayarByTransaksiId(transaksi.getId());
+            if (totalBayarSebelumnya == null) {
+                totalBayarSebelumnya = BigDecimal.ZERO;
+            }
+
+            BigDecimal totalBayarAkhir = totalBayarSebelumnya.add(jumlahBayarSekarang);
+            pembayaran.setWaktuBayar(LocalDateTime.now());
+
+            if (dto.getMetodePembayaran() != null) {
+                pembayaran.setMetodePembayaran(Pembayaran.MetodePembayaran.valueOf(dto.getMetodePembayaran()));
+            }
+
+            if (totalBayarAkhir.compareTo(transaksi.getTotal()) >= 0) {
+                pembayaran.setStatus(Pembayaran.StatusPembayaran.LUNAS);
+            } else {
+                pembayaran.setStatus(Pembayaran.StatusPembayaran.BELUM_LUNAS);
+            }
+        }
+
         Pembayaran saved = pembayaranRepository.save(pembayaran);
         return MapperUtil.toDTO(saved);
     }

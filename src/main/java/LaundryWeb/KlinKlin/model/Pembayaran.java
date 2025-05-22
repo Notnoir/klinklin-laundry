@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -25,6 +27,24 @@ public class Pembayaran {
     private BigDecimal totalBayar;
 
     private LocalDateTime waktuBayar;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "metode_pembayaran", nullable = false, length = 20)
+    private MetodePembayaran metodePembayaran;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private StatusPembayaran status;
+
+    public enum StatusPembayaran {
+        LUNAS, BELUM_LUNAS
+    }
+
+    public enum MetodePembayaran {
+        CASH,
+        TRANSFER,
+        E_WALLET
+    }
 
     // getters & setters
     public String getId() {
@@ -57,5 +77,21 @@ public class Pembayaran {
 
     public void setWaktuBayar(LocalDateTime waktuBayar) {
         this.waktuBayar = waktuBayar;
+    }
+
+    public MetodePembayaran getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(MetodePembayaran metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
+    public StatusPembayaran getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPembayaran status) {
+        this.status = status;
     }
 }

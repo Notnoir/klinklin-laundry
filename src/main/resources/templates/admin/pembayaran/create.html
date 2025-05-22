@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Tambah Pembayaran</title>
+  </head>
+  <body>
+    <h1>Tambah Pembayaran</h1>
+
+    <form
+      th:action="@{/admin/pembayaran/save}"
+      th:object="${pembayaranDTO}"
+      method="post"
+    >
+      <div>
+        <label>ID Transaksi</label>
+        <select th:field="*{transaksiId}">
+          <option value="" disabled selected>Pilih Transaksi</option>
+          <option
+            th:each="trx : ${listTransaksi}"
+            th:value="${trx.id}"
+            th:text="|${trx.id} - ${trx.namaPelanggan}|"
+          ></option>
+        </select>
+        <div
+          th:if="${#fields.hasErrors('transaksiId')}"
+          th:errors="*{transaksiId}"
+        ></div>
+      </div>
+
+      <div>
+        <label>Jumlah Bayar</label>
+        <input type="number" step="0.01" th:field="*{jumlah}" />
+        <div th:if="${#fields.hasErrors('jumlah')}" th:errors="*{jumlah}"></div>
+      </div>
+
+      <div>
+        <label>Metode Pembayaran</label>
+        <select th:field="*{metodePembayaran}">
+          <option value="" disabled selected>Pilih Metode</option>
+          <option
+            th:each="metode : ${metodePembayaranOptions}"
+            th:value="${metode}"
+            th:text="${metode}"
+          ></option>
+        </select>
+      </div>
+
+      <!-- <div>
+        <label>Status Pembayaran</label>
+        <select th:field="*{status}">
+          <option value="" disabled selected>Pilih Status</option>
+          <option
+            th:each="status : ${statusPembayaranOptions}"
+            th:value="${status}"
+            th:text="${status}"
+          ></option>
+        </select>
+      </div> -->
+
+      <button type="submit">Simpan</button>
+    </form>
+
+    <a href="/admin/pembayaran">Kembali ke daftar pembayaran</a>
+  </body>
+</html>

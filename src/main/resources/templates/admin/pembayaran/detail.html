@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Detail Pembayaran</title>
+  </head>
+  <body>
+    <h2>Detail Pembayaran</h2>
+
+    <table>
+      <tr>
+        <td>ID Pembayaran</td>
+        <td>:</td>
+        <td th:text="${pembayaran.id}"></td>
+      </tr>
+      <tr>
+        <td>ID Transaksi</td>
+        <td>:</td>
+        <td th:text="${pembayaran.transaksiId}"></td>
+      </tr>
+      <tr>
+        <td>Nama Pelanggan</td>
+        <td>:</td>
+        <td th:text="${pembayaran.namaPelanggan}">Nama Pelanggan</td>
+      </tr>
+      <tr>
+        <td>Berat Cucian</td>
+        <td>:</td>
+        <td th:text="${pembayaran.berat + ' kg'}"></td>
+      </tr>
+      <tr>
+        <td>Nama Kasir</td>
+        <td>:</td>
+        <td th:text="${pembayaran.namaKasir}"></td>
+      </tr>
+      <tr>
+        <td>Waktu Pembayaran</td>
+        <td>:</td>
+        <td th:text="${pembayaran.waktuBayarFormatted}"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td th:text="${pembayaran.jamBayarFormatted}">22-05-2025 10:00</td>
+      </tr>
+      <tr>
+        <td>Jumlah Bayar</td>
+        <td>:</td>
+        <td th:text="${pembayaran.totalFormatted}"></td>
+      </tr>
+      <tr>
+        <td>Metode</td>
+        <td>:</td>
+        <td th:text="${pembayaran.metodePembayaran}"></td>
+      </tr>
+      <tr>
+        <td>Status</td>
+        <td>:</td>
+        <td th:text="${pembayaran.status}"></td>
+      </tr>
+    </table>
+
+    <a th:href="@{/admin/pembayaran}">Kembali</a>
+  </body>
+</html>
