@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Tambah Transaksi</title>
+  </head>
+  <body>
+    <h2>Tambah Transaksi</h2>
+
+    <form
+      th:action="@{/kasir/transaksi/save}"
+      th:object="${transaksiDTO}"
+      method="post"
+    >
+      <label>Nama Pelanggan</label>
+      <input type="text" th:field="*{namaPelanggan}" />
+      <br />
+
+      <label>Layanan</label>
+      <select th:field="*{layananId}">
+        <option
+          th:each="layanan : ${layananList}"
+          th:value="${layanan.id}"
+          th:text="${layanan.namaLayanan}"
+        >
+          Layanan
+        </option>
+      </select>
+      <br />
+
+      <label>Kasir</label>
+      <select th:field="*{kasirId}">
+        <option
+          th:each="kasir : ${kasirList}"
+          th:value="${kasir.id}"
+          th:text="${kasir.fullName}"
+        >
+          Kasir
+        </option>
+      </select>
+      <br />
+
+      <label>Berat (kg)</label>
+      <input type="number" step="0.01" th:field="*{beratKg}" />
+      <br />
+
+      <button type="submit">Simpan</button>
+    </form>
+  </body>
+</html>

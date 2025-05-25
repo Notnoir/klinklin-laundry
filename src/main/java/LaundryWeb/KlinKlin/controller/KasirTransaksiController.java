@@ -60,8 +60,8 @@ public class KasirTransaksiController {
     // Proses simpan transaksi
     @PostMapping("/save")
     public String simpanTransaksi(@ModelAttribute("transaksiDTO") TransaksiDTO dto) {
-        transaksiService.save(dto);
-        return "redirect:/kasir/transaksi";
+        TransaksiDTO saved = transaksiService.save(dto);
+        return "redirect:/kasir/pembayaran/create?transaksiId=" + saved.getId();
     }
 
     // Form edit transaksi
