@@ -18,7 +18,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/admin/users")
-public class UserViewController {
+public class AdminUserViewController {
 
     @Autowired
     private UserService userService;
