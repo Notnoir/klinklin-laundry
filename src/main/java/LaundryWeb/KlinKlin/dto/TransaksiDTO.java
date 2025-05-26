@@ -32,7 +32,7 @@ public class TransaksiDTO {
 
     private LocalDateTime tanggalTransaksi;
 
-    private transient String tanggalTransaksiFormatted;
+    // private transient String tanggalTransaksiFormatted;
 
     private String layananNama;
     private String kasirNama;

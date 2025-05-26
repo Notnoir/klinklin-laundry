@@ -1,8 +1,8 @@
 package LaundryWeb.KlinKlin.controller;
 
 import LaundryWeb.KlinKlin.dto.TransaksiDTO;
-import LaundryWeb.KlinKlin.repository.LayananRepository;
-import LaundryWeb.KlinKlin.repository.UserRepository;
+// import LaundryWeb.KlinKlin.repository.LayananRepository;
+// import LaundryWeb.KlinKlin.repository.UserRepository;
 import LaundryWeb.KlinKlin.service.TransaksiService;
 import jakarta.validation.Valid;
 
@@ -20,11 +20,11 @@ public class TransaksiController {
     @Autowired
     private TransaksiService transaksiService;
 
-    @Autowired
-    private LayananRepository layananRepository;
+    // @Autowired
+    // private LayananRepository layananRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    // @Autowired
+    // private UserRepository userRepository;
 
     @PostMapping
     public ResponseEntity<TransaksiDTO> create(@Valid @RequestBody TransaksiDTO dto) {
