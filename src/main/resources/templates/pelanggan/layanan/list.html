@@ -1,0 +1,27 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Daftar Layanan</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama Layanan</th>
+          <th>Harga/Kg</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Loop through the list of layanan -->
+        <tr th:each="layanan, stat : ${listLayanan}">
+          <td th:text="${stat.index + 1}">1</td>
+          <td th:text="${layanan.namaLayanan}"></td>
+          <td th:text="${layanan.hargaPerKg}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

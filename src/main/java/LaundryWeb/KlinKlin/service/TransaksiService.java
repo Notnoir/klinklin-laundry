@@ -10,7 +10,13 @@ import LaundryWeb.KlinKlin.repository.UserRepository;
 import LaundryWeb.KlinKlin.util.MapperUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -115,4 +121,34 @@ public class TransaksiService {
             transaksiRepository.save(transaksi);
         });
     }
+
+    // Hitung jumlah transaksi hari ini
+    public int countTransaksiHariIni() {
+        LocalDateTime awalHari = LocalDate.now().atStartOfDay();
+        LocalDateTime akhirHari = awalHari.plusDays(1);
+        return transaksiRepository.countByTanggalTransaksiBetweenAndDeletedAtIsNull(awalHari, akhirHari);
+    }
+
+    // Total pemasukan hari ini
+    public int getTotalPemasukanHariIni() {
+        LocalDateTime awalHari = LocalDate.now().atStartOfDay();
+        LocalDateTime akhirHari = awalHari.plusDays(1);
+        BigDecimal total = transaksiRepository.sumTotalByTanggalTransaksiBetweenAndDeletedAtIsNull(awalHari, akhirHari);
+        return total != null ? total.intValue() : 0;
+    }
+
+    // Hitung transaksi berdasarkan status
+    public int countByStatus(Transaksi.Status status) {
+        return transaksiRepository.countByStatus(status);
+    }
+
+    // Ambil 5 transaksi terbaru
+    public List<TransaksiDTO> getTransaksiTerbaru(int jumlah) {
+        Pageable limit = PageRequest.of(0, jumlah);
+        return transaksiRepository.findTopByDeletedAtIsNull(limit)
+                .stream()
+                .map(MapperUtil::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }
