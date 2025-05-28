@@ -46,6 +46,13 @@
                 <button type="submit" class="btn btn-primary">Update</button>
               </div>
             </form>
+
+            <a
+              th:if="${reservasi.status == 'SELESAI'}"
+              th:href="@{'/admin/transaksi/from-reservasi/' + ${reservasi.id}}"
+              class="btn btn-success"
+              >Buat Transaksi</a
+            >
           </td>
         </tr>
         <tr th:if="${#lists.isEmpty(reservasiList)}">
