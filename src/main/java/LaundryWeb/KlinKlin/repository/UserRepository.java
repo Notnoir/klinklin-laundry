@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     List<User> findAllByDeletedAtIsNull();
 
     List<User> findAllByRole(Role kasir);
+
+    List<User> findByRole(Role role);
 }

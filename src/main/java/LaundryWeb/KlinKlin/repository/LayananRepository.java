@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface LayananRepository extends JpaRepository<Layanan, String> {
     List<Layanan> findAllByDeletedAtIsNull();
+
+    List<Layanan> findByDeletedAtIsNull();
 }

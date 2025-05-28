@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Detail Reservasi</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h2>Detail Reservasi</h2>
+
+    <p>
+      <strong>Alamat Penjemputan:</strong>
+      <span th:text="${reservasi.alamatPenjemputan}"></span>
+    </p>
+    <p>
+      <strong>Waktu Penjemputan:</strong>
+      <span th:text="${reservasi.tanggalReservasiFormatted}"></span>
+    </p>
+    <p>
+      <strong>Catatan Tambahan:</strong>
+      <span th:text="${reservasi.catatan}"></span>
+    </p>
+    <p><strong>Status:</strong> <span th:text="${reservasi.status}"></span></p>
+
+    <a th:href="@{/pelanggan/reservasi/list}">Kembali ke Daftar</a>
+  </body>
+</html>

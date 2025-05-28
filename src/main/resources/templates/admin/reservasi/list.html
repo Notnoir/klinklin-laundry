@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Daftar Reservasi</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <h1>Daftar Reservasi Anda</h1>
+
+    <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID Reservasi</th>
+          <th>Nama Pelanggan</th>
+          <th>Tanggal Reservasi</th>
+          <th>Layanan</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="reservasi : ${reservasiList}">
+          <td th:text="${reservasi.id}">ID Reservasi</td>
+          <td th:text="${reservasi.nama}">Nama Pelanggan</td>
+          <td th:text="${reservasi.tanggalReservasiFormatted}">Tanggal</td>
+          <td th:text="${reservasi.namaLayanan}">Layanan</td>
+          <td th:text="${reservasi.status}">Status</td>
+          <td>
+            <a th:href="@{'/admin/reservasi/detail/' + ${reservasi.id}}"
+              >Detail</a
+            >
+
+            <form
+              th:action="@{/admin/reservasi/{id}/status(id=${reservasi.id})}"
+              method="post"
+            >
+              <div class="input-group">
+                <select name="status" class="form-select">
+                  <option value="MENUNGGU">MENUNGGU</option>
+                  <option value="DIJEMPUT">DIJEMPUT</option>
+                  <option value="DIPROSES">DIPROSES</option>
+                  <option value="SELESAI">SELESAI</option>
+                  <option value="DIBATALKAN">DIBATALKAN</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Update</button>
+              </div>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(reservasiList)}">
+          <td colspan="6">Belum ada reservasi.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><a th:href="@{/admin/reservasi/create}">Buat Reservasi Baru</a></p>
+  </body>
+</html>

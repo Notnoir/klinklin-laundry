@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Daftar Reservasi</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <h1>Daftar Reservasi Anda</h1>
+
+    <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID Reservasi</th>
+          <th>Tanggal Reservasi</th>
+          <th>Layanan</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="reservasi : ${reservasiList}">
+          <td th:text="${reservasi.id}">ID Reservasi</td>
+          <td th:text="${reservasi.tanggalReservasiFormatted}">Tanggal</td>
+          <td th:text="${reservasi.namaLayanan}">Layanan</td>
+          <td th:text="${reservasi.status}">Status</td>
+          <td>
+            <a th:href="@{'/pelanggan/reservasi/detail/' + ${reservasi.id}}"
+              >Detail</a
+            >
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(reservasiList)}">
+          <td colspan="6">Belum ada reservasi.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><a th:href="@{/pelanggan/reservasi/create}">Buat Reservasi Baru</a></p>
+  </body>
+</html>

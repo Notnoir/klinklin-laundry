@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Buat Reservasi</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h2>Form Buat Reservasi</h2>
+
+    <form
+      th:action="@{/pelanggan/reservasi/save}"
+      th:object="${reservasiDTO}"
+      method="post"
+    >
+      <label for="layanan">Pilih Layanan:</label>
+      <select th:field="*{layananId}" id="layanan" required>
+        <option value="" disabled selected>Pilih layanan</option>
+        <option
+          th:each="layanan : ${layananList}"
+          th:value="${layanan.id}"
+          th:text="${layanan.namaLayanan + ' - Rp ' + #numbers.formatDecimal(layanan.hargaPerKg, 0, 'COMMA', 2, 'POINT')}"
+        ></option>
+      </select>
+      <br />
+
+      <label>Alamat Penjemputan:</label><br />
+      <input type="text" th:field="*{alamatPenjemputan}" required /><br /><br />
+
+      <label>Waktu Penjemputan:</label><br />
+      <input
+        type="datetime-local"
+        th:field="*{waktuPenjemputan}"
+        required
+      /><br /><br />
+
+      <label>Catatan Tambahan:</label><br />
+      <textarea th:field="*{catatan}" rows="4"></textarea><br /><br />
+
+      <button type="submit">Kirim Permintaan</button>
+    </form>
+
+    <br />
+    <a th:href="@{/pelanggan/reservasi/list}">Kembali ke Daftar Reservasi</a>
+  </body>
+</html>

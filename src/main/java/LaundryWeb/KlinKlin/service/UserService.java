@@ -5,12 +5,14 @@ import LaundryWeb.KlinKlin.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import LaundryWeb.KlinKlin.dto.UserDTO;
 import LaundryWeb.KlinKlin.util.MapperUtil;
+import LaundryWeb.KlinKlin.model.User.Role;
 
 @Service
 public class UserService {
@@ -72,4 +74,18 @@ public class UserService {
             userRepository.save(user);
         });
     }
+
+    public User findByEmail(String email) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        return userOpt.orElse(null);
+    }
+
+    public List<User> getAllPelanggan() {
+        return userRepository.findByRole(Role.PELANGGAN);
+    }
+
+    public User getById(String id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
 }

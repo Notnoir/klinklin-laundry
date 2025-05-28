@@ -238,6 +238,28 @@ public class MapperUtil {
         return dto;
     }
 
+    // Resevasi
+    public ReservasiDTO toDTO(Reservasi reservasi) {
+        ReservasiDTO dto = new ReservasiDTO();
+        dto.setId(reservasi.getId());
+        dto.setUserId(reservasi.getUser().getId());
+        dto.setAlamatPenjemputan(reservasi.getAlamatPenjemputan());
+        dto.setWaktuPenjemputan(reservasi.getWaktuPenjemputan());
+        dto.setCatatan(reservasi.getCatatan());
+        dto.setStatus(reservasi.getStatus().name());
+        return dto;
+    }
+
+    public Reservasi toEntity(ReservasiDTO dto, User user) {
+        Reservasi reservasi = new Reservasi();
+        reservasi.setUser(user);
+        reservasi.setAlamatPenjemputan(dto.getAlamatPenjemputan());
+        reservasi.setWaktuPenjemputan(dto.getWaktuPenjemputan());
+        reservasi.setCatatan(dto.getCatatan());
+        // status default = MENUNGGU saat baru dibuat
+        return reservasi;
+    }
+
     public static String formatTanggal(LocalDateTime tanggal) {
         if (tanggal == null)
             return "-";

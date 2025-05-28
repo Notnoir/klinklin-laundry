@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Buat Reservasi Baru - Admin</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <h1>Buat Reservasi Baru</h1>
+
+    <form
+      th:action="@{/kasir/reservasi/save}"
+      th:object="${reservasiDTO}"
+      method="post"
+    >
+      <div>
+        <label for="userId">Pelanggan:</label>
+        <select th:field="*{userId}" id="userId" required>
+          <option value="" disabled selected>Pilih Pelanggan</option>
+          <option
+            th:each="p : ${pelangganList}"
+            th:value="${p.id}"
+            th:text="${p.fullName}"
+          >
+            Nama Pelanggan
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label for="layananId">Layanan:</label>
+        <select th:field="*{layananId}" id="layananId" required>
+          <option value="" disabled selected>Pilih Layanan</option>
+          <option
+            th:each="l : ${layananList}"
+            th:value="${l.id}"
+            th:text="${l.namaLayanan} + ' - Rp ' + ${#numbers.formatDecimal(l.hargaPerKg, 0, 'COMMA', 2, 'POINT')} + ' /kg'"
+          ></option>
+        </select>
+      </div>
+
+      <div>
+        <label for="alamatPenjemputan">Alamat Penjemputan:</label>
+        <input
+          type="text"
+          th:field="*{alamatPenjemputan}"
+          id="alamatPenjemputan"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="waktuPenjemputan">Waktu Penjemputan:</label>
+        <input
+          type="datetime-local"
+          th:field="*{waktuPenjemputan}"
+          id="waktuPenjemputan"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="catatan">Catatan:</label>
+        <textarea th:field="*{catatan}" id="catatan" rows="3"></textarea>
+      </div>
+
+      <div>
+        <button type="submit">Simpan Reservasi</button>
+        <a href="/kasir/reservasi/list">Batal</a>
+      </div>
+    </form>
+  </body>
+</html>
