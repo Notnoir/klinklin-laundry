@@ -37,6 +37,8 @@ public class TransaksiDTO {
     private String layananNama;
     private String kasirNama;
 
+    private String reservasiId; // untuk transaksi dari reservasi
+
     public String getTanggalTransaksiFormatted() {
         return MapperUtil.formatTanggal(this.tanggalTransaksi);
     }
@@ -46,6 +48,14 @@ public class TransaksiDTO {
             return "Rp 0";
         DecimalFormat formatter = new DecimalFormat("#,##0");
         return "Rp " + formatter.format(total).replace(',', '.').replace('.', ',');
+    }
+
+    public String getReservasiId() {
+        return reservasiId;
+    }
+
+    public void setReservasiId(String reservasiId) {
+        this.reservasiId = reservasiId;
     }
 
 }

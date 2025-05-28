@@ -6,10 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import LaundryWeb.KlinKlin.dto.ReservasiDTO;
 import LaundryWeb.KlinKlin.dto.TransaksiDTO;
 import LaundryWeb.KlinKlin.model.Layanan;
 import LaundryWeb.KlinKlin.model.User;
+import LaundryWeb.KlinKlin.service.ReservasiService;
 import LaundryWeb.KlinKlin.service.TransaksiService;
+import LaundryWeb.KlinKlin.service.UserService;
 import LaundryWeb.KlinKlin.repository.LayananRepository;
 import LaundryWeb.KlinKlin.repository.UserRepository;
 import LaundryWeb.KlinKlin.model.User.Role;
@@ -24,6 +27,8 @@ public class KasirTransaksiController {
     private final TransaksiService transaksiService;
     private final LayananRepository layananRepository;
     private final UserRepository userRepository;
+    private final ReservasiService reservasiService;
+    private final UserService userService;
 
     // Menampilkan semua transaksi
     @GetMapping
@@ -64,6 +69,12 @@ public class KasirTransaksiController {
         return "redirect:/kasir/pembayaran/create?transaksiId=" + saved.getId();
     }
 
+    @PostMapping("/save-from-reservasi")
+    public String simpanTransaksiReservasi(@ModelAttribute("transaksiDTO") TransaksiDTO dto) {
+        transaksiService.save(dto);
+        return "redirect:/kasir/transaksi";
+    }
+
     // Form edit transaksi
     @GetMapping("/edit/{id}")
     public String formEditTransaksi(@PathVariable String id, Model model) {
@@ -98,4 +109,24 @@ public class KasirTransaksiController {
         transaksiService.deleteById(id);
         return "redirect:/kasir/transaksi";
     }
+
+    @GetMapping("/from-reservasi/{reservasiId}")
+    public String buatTransaksiDariReservasi(@PathVariable String reservasiId, Model model) {
+        ReservasiDTO reservasiDTO = reservasiService.getReservasiById(reservasiId);
+        if (reservasiDTO == null) {
+            return "redirect:/admin/reservasi/list";
+        }
+
+        TransaksiDTO transaksiDTO = new TransaksiDTO();
+        transaksiDTO.setNamaPelanggan(reservasiDTO.getNama());
+        transaksiDTO.setPelangganId(reservasiDTO.getUserId());
+        transaksiDTO.setReservasiId(reservasiDTO.getId());
+        transaksiDTO.setLayananId(reservasiDTO.getLayananId()); // <== Set otomatis dari reservasi
+
+        model.addAttribute("transaksiDTO", transaksiDTO);
+        model.addAttribute("layananList", layananRepository.findByDeletedAtIsNull());
+        model.addAttribute("kasirList", userService.getAllKasir());
+        return "kasir/transaksi/create-from-reservasi";
+    }
+
 }

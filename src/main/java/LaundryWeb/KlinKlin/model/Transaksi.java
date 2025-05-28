@@ -56,6 +56,10 @@ public class Transaksi {
         DITERIMA, DICUCI, DIJEMUR, DISETRIKA, SELESAI
     }
 
+    @ManyToOne
+    @JoinColumn(name = "reservasi_id", nullable = true)
+    private Reservasi reservasi;
+
     // getters & setters
     public String getId() {
         return id;
@@ -136,4 +140,13 @@ public class Transaksi {
     public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
+
+    public Reservasi getReservasi() {
+        return reservasi;
+    }
+
+    public void setReservasi(Reservasi reservasi) {
+        this.reservasi = reservasi;
+    }
+
 }

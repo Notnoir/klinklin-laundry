@@ -98,6 +98,15 @@ public class MapperUtil {
         }
 
         t.setTanggalTransaksi(dto.getTanggalTransaksi());
+
+        if (dto.getReservasiId() != null && !dto.getReservasiId().isEmpty()) {
+            Reservasi reservasi = new Reservasi();
+            reservasi.setId(dto.getReservasiId());
+            t.setReservasi(reservasi);
+        } else {
+            t.setReservasi(null);
+        }
+
         return t;
     }
 

@@ -5,6 +5,7 @@ import LaundryWeb.KlinKlin.model.Layanan;
 import LaundryWeb.KlinKlin.model.Transaksi;
 import LaundryWeb.KlinKlin.model.User;
 import LaundryWeb.KlinKlin.repository.LayananRepository;
+import LaundryWeb.KlinKlin.repository.ReservasiRepository;
 import LaundryWeb.KlinKlin.repository.TransaksiRepository;
 import LaundryWeb.KlinKlin.repository.UserRepository;
 import LaundryWeb.KlinKlin.util.MapperUtil;
@@ -33,6 +34,9 @@ public class TransaksiService {
     @Autowired
     private LayananRepository layananRepository;
 
+    @Autowired
+    private ReservasiRepository reservasiRepository;
+
     public TransaksiDTO save(TransaksiDTO dto) {
         User pelanggan = null;
         if (dto.getPelangganId() != null && !dto.getPelangganId().isEmpty()) {
@@ -45,10 +49,19 @@ public class TransaksiService {
         Layanan layanan = layananRepository.findById(dto.getLayananId())
                 .orElseThrow(() -> new RuntimeException("Layanan tidak ditemukan"));
 
-        // ✅ Tambahkan logika pengisian otomatis
-        if (dto.getTotal() == null) {
-            dto.setTotal(layanan.getHargaPerKg().multiply(dto.getBeratKg()));
+        BigDecimal hargaPerKg = layanan.getHargaPerKg();
+        BigDecimal total = BigDecimal.ZERO;
+
+        if (dto.getBeratKg() != null) {
+            total = hargaPerKg.multiply(dto.getBeratKg());
+
+            // Tambahkan biaya tetap Rp10.000 jika dari reservasi
+            if (dto.getReservasiId() != null && !dto.getReservasiId().isEmpty()) {
+                total = total.add(BigDecimal.valueOf(10000));
+            }
         }
+
+        dto.setTotal(total);
 
         if (dto.getStatus() == null || dto.getStatus().isEmpty()) {
             dto.setStatus("DITERIMA");

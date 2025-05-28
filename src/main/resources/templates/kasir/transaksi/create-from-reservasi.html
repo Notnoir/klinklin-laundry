@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Buat Reservasi Baru - Admin</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <h1>Buat Reservasi Baru</h1>
+
+    <form
+      th:action="@{/kasir/transaksi/save-from-reservasi}"
+      th:object="${transaksiDTO}"
+      method="post"
+    >
+      <input type="hidden" th:field="*{reservasiId}" />
+      <input type="hidden" th:field="*{pelangganId}" />
+      <input type="hidden" th:field="*{layananId}" />
+
+      <label>Nama Pelanggan</label>
+      <input type="text" th:field="*{namaPelanggan}" readonly />
+      <br />
+
+      <label>Layanan</label>
+      <select disabled>
+        <option
+          th:each="layanan : ${layananList}"
+          th:value="${layanan.id}"
+          th:selected="${layanan.id == transaksiDTO.layananId}"
+          th:text="${layanan.namaLayanan}"
+        ></option>
+      </select>
+
+      <br />
+
+      <label>Kasir</label>
+      <select th:field="*{kasirId}">
+        <option
+          th:each="kasir : ${kasirList}"
+          th:value="${kasir.id}"
+          th:text="${kasir.fullName}"
+        ></option>
+      </select>
+      <br />
+
+      <label>Berat (kg)</label>
+      <input type="number" step="0.01" th:field="*{beratKg}" />
+      <br />
+
+      <button type="submit">Simpan</button>
+    </form>
+  </body>
+</html>

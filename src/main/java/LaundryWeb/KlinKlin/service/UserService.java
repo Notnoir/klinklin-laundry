@@ -84,6 +84,10 @@ public class UserService {
         return userRepository.findByRole(Role.PELANGGAN);
     }
 
+    public List<User> getAllKasir() {
+        return userRepository.findByRole(Role.KASIR);
+    }
+
     public User getById(String id) {
         return userRepository.findById(id).orElse(null);
     }

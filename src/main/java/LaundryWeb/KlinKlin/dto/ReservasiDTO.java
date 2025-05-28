@@ -19,6 +19,8 @@ public class ReservasiDTO {
     // private String HargaLayanan;
     private BigDecimal hargaPerKg;
 
+    private String reservasiId;
+
     public ReservasiDTO() {
     }
 
@@ -106,5 +108,13 @@ public class ReservasiDTO {
 
     public void setNama(String nama) {
         this.nama = nama;
+    }
+
+    public String getReservasiId() {
+        return reservasiId;
+    }
+
+    public void setReservasiId(String reservasiId) {
+        this.reservasiId = reservasiId;
     }
 }
