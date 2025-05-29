@@ -17,4 +17,8 @@ public interface PembayaranRepository extends JpaRepository<Pembayaran, String> 
 
     Optional<Pembayaran> findByTransaksiIdAndStatus(String transaksiId, Pembayaran.StatusPembayaran status);
 
+    List<Pembayaran> findByTransaksiPelangganEmail(String email);
+
+    List<Pembayaran> findAllByTransaksiPelangganId(String pelangganId);
+
 }

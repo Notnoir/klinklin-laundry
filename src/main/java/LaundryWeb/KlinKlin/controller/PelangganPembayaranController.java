@@ -1,15 +1,23 @@
 package LaundryWeb.KlinKlin.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import LaundryWeb.KlinKlin.dto.PembayaranDTO;
 import LaundryWeb.KlinKlin.model.Transaksi;
+import LaundryWeb.KlinKlin.model.User;
 import LaundryWeb.KlinKlin.repository.TransaksiRepository;
 import LaundryWeb.KlinKlin.service.PembayaranService;
+import LaundryWeb.KlinKlin.service.UserService;
 
 @Controller
 @RequestMapping("/pelanggan/pembayaran")
@@ -20,6 +28,28 @@ public class PelangganPembayaranController {
 
     @Autowired
     private TransaksiRepository transaksiRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping
+    public String listPembayaran(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName(); // biasanya username/email login
+
+        User userLogin = userService.findByEmail(username); // asumsi username = email
+        if (userLogin == null) {
+            // error handling jika user tidak ditemukan
+            return "error/403"; // contoh halaman akses ditolak
+        }
+
+        String pelangganId = userLogin.getId();
+
+        List<PembayaranDTO> listPembayaran = pembayaranService.findByPelangganId(pelangganId);
+        model.addAttribute("listPembayaran", listPembayaran);
+
+        return "pelanggan/pembayaran/list";
+    }
 
     // Tampilkan form pembayaran
     @GetMapping("/create")
@@ -45,10 +75,30 @@ public class PelangganPembayaranController {
         try {
             pembayaranService.save(dto);
             redirectAttributes.addFlashAttribute("success", "Pembayaran berhasil disimpan.");
-            return "redirect:/pelanggan/transaksi"; // redirect ke halaman daftar transaksi
+            return "redirect:/pelanggan/pembayaran"; // redirect ke halaman daftar transaksi
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Gagal menyimpan pembayaran: " + e.getMessage());
             return "redirect:/pelanggan/pembayaran/create?transaksiId=" + dto.getTransaksiId();
         }
+    }
+
+    @GetMapping("/{id}/detail")
+    public String detailPembayaran(@PathVariable String id, Model model) {
+        PembayaranDTO pembayaran = pembayaranService.findById(id);
+        if (pembayaran == null) {
+            return "redirect:/pelanggan/pembayaran?error=notfound";
+        }
+        model.addAttribute("pembayaran", pembayaran);
+        return "pelanggan/pembayaran/detail";
+    }
+
+    @GetMapping("/{id}/struk")
+    public String cetakStruk(@PathVariable String id, Model model) {
+        PembayaranDTO pembayaran = pembayaranService.findById(id);
+        if (pembayaran == null) {
+            return "redirect:/pelanggan/pembayaran?error=notfound";
+        }
+        model.addAttribute("pembayaran", pembayaran);
+        return "pelanggan/pembayaran/struk";
     }
 }

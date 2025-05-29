@@ -99,4 +99,12 @@ public class PembayaranService {
                 .map(MapperUtil::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<PembayaranDTO> findByPelangganId(String pelangganId) {
+        return pembayaranRepository.findAllByTransaksiPelangganId(pelangganId)
+                .stream()
+                .map(MapperUtil::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -13,6 +13,7 @@
       <h2 class="mb-4">Form Pembayaran</h2>
 
       <form
+        id="formPembayaran"
         th:action="@{/pelanggan/pembayaran/simpan}"
         th:object="${pembayaran}"
         method="post"
@@ -77,17 +78,34 @@
           <label>Metode Pembayaran</label>
           <select class="form-select" th:field="*{metodePembayaran}" required>
             <option value="" disabled selected>Pilih metode</option>
-            <option value="CASH">Tunai</option>
             <option value="TRANSFER">Transfer</option>
             <option value="E_WALLET">QRIS</option>
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Bayar</button>
+        <button id="btnBayar" type="submit" class="btn btn-primary">
+          Bayar
+        </button>
         <a th:href="@{/pelanggan/transaksi}" class="btn btn-secondary"
           >Kembali</a
         >
       </form>
     </div>
+
+    <script>
+      const form = document.getElementById("formPembayaran");
+      const btnBayar = document.getElementById("btnBayar");
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault(); // cegah submit langsung
+
+        btnBayar.disabled = true; // matikan tombol supaya tidak klik ulang
+        btnBayar.innerText = "Memproses Pembayaran...";
+
+        setTimeout(() => {
+          form.submit(); // submit setelah delay 5 detik (5000 ms)
+        }, 3000);
+      });
+    </script>
   </body>
 </html>
