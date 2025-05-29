@@ -164,4 +164,11 @@ public class TransaksiService {
                 .collect(Collectors.toList());
     }
 
+    public List<TransaksiDTO> findByPelangganId(String pelangganId) {
+        return transaksiRepository.findByPelanggan_IdAndDeletedAtIsNull(pelangganId)
+                .stream()
+                .map(MapperUtil::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }

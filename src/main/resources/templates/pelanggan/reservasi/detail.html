@@ -1,26 +1,56 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Detail Reservasi</title>
+    <title>Detail Reservasi (Admin)</title>
     <meta charset="UTF-8" />
   </head>
   <body>
-    <h2>Detail Reservasi</h2>
+    <h1>Detail Reservasi (Admin)</h1>
 
-    <p>
-      <strong>Alamat Penjemputan:</strong>
-      <span th:text="${reservasi.alamatPenjemputan}"></span>
-    </p>
-    <p>
-      <strong>Waktu Penjemputan:</strong>
-      <span th:text="${reservasi.tanggalReservasiFormatted}"></span>
-    </p>
-    <p>
-      <strong>Catatan Tambahan:</strong>
-      <span th:text="${reservasi.catatan}"></span>
-    </p>
-    <p><strong>Status:</strong> <span th:text="${reservasi.status}"></span></p>
+    <div>
+      <p>
+        <strong>ID Reservasi:</strong> <span th:text="${reservasi.id}"></span>
+      </p>
+      <p>
+        <strong>Nama Pelanggan:</strong>
+        <span th:text="${reservasi.nama}"></span>
+      </p>
+      <p>
+        <strong>Alamat Penjemputan:</strong>
+        <span th:text="${reservasi.alamatPenjemputan}"></span>
+      </p>
+      <p>
+        <strong>Tanggal Penjemputan:</strong>
+        <span th:text="${reservasi.tanggalReservasiFormatted}"></span>
+      </p>
 
-    <a th:href="@{/pelanggan/reservasi/list}">Kembali ke Daftar</a>
+      <h3>Detail Layanan</h3>
+      <p>
+        <strong>Nama Layanan:</strong>
+        <span th:text="${reservasi.namaLayanan}"></span>
+      </p>
+      <!-- <p>
+        <strong>Harga per Kg:</strong> Rp
+        <span
+          th:text="${#numbers.formatDecimal(reservasi.hargaPerKg, 0, 'COMMA', 2, 'POINT')}"
+        ></span>
+      </p> -->
+
+      <p>
+        <strong>Harga Layanan:</strong> Rp
+        <span th:text="${reservasi.hargaPerKg}"></span> /Kg
+      </p>
+
+      <h3>Status Reservasi</h3>
+      <p><span th:text="${reservasi.status}"></span></p>
+      <!-- Bisa ditambah form update status jika ingin -->
+
+      <p>
+        <strong>Catatan Tambahan:</strong>
+        <span th:text="${reservasi.catatan}"></span>
+      </p>
+    </div>
+
+    <a th:href="@{/pelanggan/reservasi/list}">Kembali ke Daftar Reservasi</a>
   </body>
 </html>

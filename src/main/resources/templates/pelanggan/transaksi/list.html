@@ -1,0 +1,31 @@
+<h2>Daftar Transaksi Saya</h2>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tanggal</th>
+      <th>Layanan</th>
+      <th>Berat (Kg)</th>
+      <th>Total</th>
+      <th>Status</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="transaksi : ${listTransaksi}">
+      <td th:text="${transaksi.id}"></td>
+      <td th:text="${transaksi.tanggalTransaksiFormatted}"></td>
+      <td th:text="${transaksi.layananNama}"></td>
+      <td th:text="${transaksi.beratKg}"></td>
+      <td th:text="${transaksi.totalFormatted}"></td>
+      <td th:text="${transaksi.status}"></td>
+      <td th:if="${transaksi.status == 'DITERIMA'}">
+        <a
+          th:href="@{/pelanggan/pembayaran/create(transaksiId=${transaksi.id})}"
+          class="btn btn-primary"
+          >Bayar</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>
