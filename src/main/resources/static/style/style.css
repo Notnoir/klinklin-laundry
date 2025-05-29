@@ -109,3 +109,143 @@ body {
     opacity: 0.5;
   }
 }
+
+@keyframes bubblesUp {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+}
+
+.bubbles {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.3),
+    rgba(147, 197, 253, 0.5)
+  );
+  animation: bubblesUp 8s infinite linear;
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bubbles:nth-child(1) {
+  left: 10%;
+  width: 40px;
+  height: 40px;
+  animation-delay: 0s;
+}
+.bubbles:nth-child(2) {
+  left: 20%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 2s;
+}
+.bubbles:nth-child(3) {
+  left: 35%;
+  width: 60px;
+  height: 60px;
+  animation-delay: 4s;
+}
+.bubbles:nth-child(4) {
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  animation-delay: 1s;
+}
+.bubbles:nth-child(5) {
+  left: 65%;
+  width: 50px;
+  height: 50px;
+  animation-delay: 3s;
+}
+.bubbles:nth-child(6) {
+  left: 80%;
+  width: 25px;
+  height: 25px;
+  animation-delay: 5s;
+}
+.bubbles:nth-child(7) {
+  left: 90%;
+  width: 35px;
+  height: 35px;
+  animation-delay: 6s;
+}
+.bubbles:nth-child(8) {
+  left: 5%;
+  width: 45px;
+  height: 45px;
+  animation-delay: 7s;
+}
+.bubbles:nth-child(9) {
+  left: 25%;
+  width: 55px;
+  height: 55px;
+  animation-delay: 1.5s;
+}
+.bubbles:nth-child(10) {
+  left: 75%;
+  width: 40px;
+  height: 40px;
+  animation-delay: 4.5s;
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 1s ease-out;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.swiper-wrapper {
+  height: auto !important;
+}
+.swiper-slide {
+  height: auto !important;
+}

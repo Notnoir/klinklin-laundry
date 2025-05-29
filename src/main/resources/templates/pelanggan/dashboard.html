@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Dashboard Pelanggan</title>
+  </head>
+  <body>
+    <h1>Halo, <span th:text="${user.fullName}">Nama User</span></h1>
+    <p>Total Transaksi: <span th:text="${totalTransaksi}">0</span></p>
+    <p>Total Pembayaran: <span th:text="${totalPembayaran}">0</span></p>
+
+    <h2>Daftar Transaksi</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Tanggal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="trx : ${transaksiList}">
+          <td th:text="${trx.id}">trx-id</td>
+          <td th:text="${trx.total}">0</td>
+          <td th:text="${trx.status}">Status</td>
+          <td th:text="${trx.tanggalTransaksiFormatted}">tanggal</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Daftar Pembayaran</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Jumlah</th>
+          <th>Status</th>
+          <th>Waktu Bayar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="pby : ${pembayaranList}">
+          <td th:text="${pby.id}">pby-id</td>
+          <td th:text="${pby.jumlah}">0</td>
+          <td th:text="${pby.status}">Status</td>
+          <td th:text="${pby.waktuBayarFormatted}">waktu bayar</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
