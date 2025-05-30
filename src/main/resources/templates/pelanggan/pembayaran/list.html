@@ -27,25 +27,15 @@
           <td th:text="${stat.index + 1}">1</td>
           <td th:text="${pembayaran.id}">PB-001</td>
           <td th:text="${pembayaran.transaksiId}">TRX-001</td>
-          <td
-            th:text="${#numbers.formatDecimal(pembayaran.jumlah, 1, 'COMMA', 2, 'POINT')}"
-          >
-            50.000
-          </td>
+          <td th:text="${#numbers.formatDecimal(pembayaran.jumlah, 1, 'COMMA', 2, 'POINT')}">50.000</td>
           <td th:text="${pembayaran.waktuBayarFormatted}">22-05-2025 10:00</td>
           <td th:text="${pembayaran.metodePembayaran}">CASH</td>
           <td th:text="${pembayaran.status}">LUNAS</td>
           <td>
-            <a
-              th:href="@{'/pelanggan/pembayaran/' + ${pembayaran.id} + '/detail'}"
-              >Detail</a
-            >
+            <a th:href="@{'/pelanggan/pembayaran/' + ${pembayaran.id} + '/detail'}">Detail</a>
           </td>
           <td>
-            <a
-              th:href="@{'/pelanggan/pembayaran/' + ${pembayaran.id} + '/struk'}"
-              >Struk</a
-            >
+            <a th:href="@{'/pelanggan/pembayaran/' + ${pembayaran.id} + '/struk'}">Struk</a>
           </td>
         </tr>
       </tbody>
