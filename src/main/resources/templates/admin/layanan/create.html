@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" class="bg-white text-gray-800">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  class="bg-white text-gray-800"
+>
   <head>
     <meta charset="UTF-8" />
     <title>Tambah Layanan - KlinKlin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" th:href="@{/style/style.css}" />
     <link rel="stylesheet" th:href="@{/css/output.css}" />
     <link
@@ -11,7 +14,9 @@
       rel="stylesheet"
     />
   </head>
-  <body class="min-h-screen flex flex-col items-center px-4 py-10 bg-gradient-to-b from-white to-blue-50">
+  <body
+    class="min-h-screen flex flex-col items-center px-4 py-10 bg-gradient-to-b from-white to-blue-50"
+  >
     <h2 class="text-3xl font-bold text-blue-600 mb-6">Tambah Layanan</h2>
 
     <form
@@ -22,7 +27,9 @@
     >
       <!-- Nama Layanan -->
       <div>
-        <label for="namaLayanan" class="block text-sm font-medium text-gray-700">Nama Layanan:</label>
+        <label for="namaLayanan" class="block text-sm font-medium text-gray-700"
+          >Nama Layanan:</label
+        >
         <input
           type="text"
           id="namaLayanan"
@@ -38,7 +45,9 @@
 
       <!-- Harga per Kg -->
       <div>
-        <label for="hargaPerKg" class="block text-sm font-medium text-gray-700">Harga per Kg:</label>
+        <label for="hargaPerKg" class="block text-sm font-medium text-gray-700"
+          >Harga per Kg:</label
+        >
         <input
           type="number"
           id="hargaPerKg"

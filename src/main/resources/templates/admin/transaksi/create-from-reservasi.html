@@ -3,7 +3,6 @@
   <head>
     <title>Buat Reservasi Baru - Admin</title>
     <meta charset="UTF-8" />
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" th:href="@{/style/style.css}" />
     <link rel="stylesheet" th:href="@{/css/output.css}" />
     <link
@@ -11,9 +10,13 @@
       rel="stylesheet"
     />
   </head>
-  <body class="min-h-screen bg-gradient-to-b from-white to-blue-50 px-6 py-10 text-gray-800">
+  <body
+    class="min-h-screen bg-gradient-to-b from-white to-blue-50 px-6 py-10 text-gray-800"
+  >
     <div class="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-8">
-      <h1 class="text-2xl font-bold text-blue-600 mb-6">Buat Transaksi dari Reservasi</h1>
+      <h1 class="text-2xl font-bold text-blue-600 mb-6">
+        Buat Transaksi dari Reservasi
+      </h1>
 
       <form
         th:action="@{/admin/transaksi/save-from-reservasi}"

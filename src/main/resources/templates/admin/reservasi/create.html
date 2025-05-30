@@ -3,7 +3,6 @@
   <head>
     <title>Buat Reservasi Baru - Admin</title>
     <meta charset="UTF-8" />
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" th:href="@{/style/style.css}" />
     <link rel="stylesheet" th:href="@{/css/output.css}" />
     <link
@@ -11,7 +10,9 @@
       rel="stylesheet"
     />
   </head>
-  <body class="min-h-screen bg-gradient-to-b from-white to-blue-50 px-6 py-10 text-gray-800">
+  <body
+    class="min-h-screen bg-gradient-to-b from-white to-blue-50 px-6 py-10 text-gray-800"
+  >
     <div class="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-8">
       <h1 class="text-2xl font-bold text-blue-600 mb-6">Buat Reservasi Baru</h1>
 
@@ -56,7 +57,9 @@
         </div>
 
         <div>
-          <label for="alamatPenjemputan" class="block font-medium mb-1">Alamat Penjemputan:</label>
+          <label for="alamatPenjemputan" class="block font-medium mb-1"
+            >Alamat Penjemputan:</label
+          >
           <input
             type="text"
             th:field="*{alamatPenjemputan}"
@@ -67,7 +70,9 @@
         </div>
 
         <div>
-          <label for="waktuPenjemputan" class="block font-medium mb-1">Waktu Penjemputan:</label>
+          <label for="waktuPenjemputan" class="block font-medium mb-1"
+            >Waktu Penjemputan:</label
+          >
           <input
             type="datetime-local"
             th:field="*{waktuPenjemputan}"
@@ -94,10 +99,7 @@
           >
             Simpan Reservasi
           </button>
-          <a
-            href="/admin/reservasi/list"
-            class="text-blue-600 hover:underline"
-          >
+          <a href="/admin/reservasi/list" class="text-blue-600 hover:underline">
             Batal
           </a>
         </div>

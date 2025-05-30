@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" class="bg-white text-gray-800">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  class="bg-white text-gray-800"
+>
   <head>
     <meta charset="UTF-8" />
     <title>Daftar Pembayaran</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" th:href="@{/style/style.css}" />
     <link rel="stylesheet" th:href="@{/css/output.css}" />
     <link
@@ -38,16 +41,28 @@
               <th class="px-4 py-3">Cetak</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100 bg-white" th:each="pembayaran, stat : ${listPembayaran}">
+          <tbody
+            class="divide-y divide-gray-100 bg-white"
+            th:each="pembayaran, stat : ${listPembayaran}"
+          >
             <tr class="hover:bg-blue-50 transition">
               <td class="px-4 py-2" th:text="${stat.index + 1}">1</td>
               <td class="px-4 py-2" th:text="${pembayaran.id}">PB-001</td>
-              <td class="px-4 py-2" th:text="${pembayaran.transaksiId}">TRX-001</td>
-              <td class="px-4 py-2" th:text="${#numbers.formatDecimal(pembayaran.jumlah, 1, 'COMMA', 2, 'POINT')}">
+              <td class="px-4 py-2" th:text="${pembayaran.transaksiId}">
+                TRX-001
+              </td>
+              <td
+                class="px-4 py-2"
+                th:text="${#numbers.formatDecimal(pembayaran.jumlah, 1, 'COMMA', 2, 'POINT')}"
+              >
                 50.000
               </td>
-              <td class="px-4 py-2" th:text="${pembayaran.waktuBayarFormatted}">22-05-2025 10:00</td>
-              <td class="px-4 py-2" th:text="${pembayaran.metodePembayaran}">CASH</td>
+              <td class="px-4 py-2" th:text="${pembayaran.waktuBayarFormatted}">
+                22-05-2025 10:00
+              </td>
+              <td class="px-4 py-2" th:text="${pembayaran.metodePembayaran}">
+                CASH
+              </td>
               <td class="px-4 py-2" th:text="${pembayaran.status}">LUNAS</td>
               <td class="px-4 py-2">
                 <a

@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>List Layanan - KlinKlin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" th:href="@{/style/style.css}" />
     <link rel="stylesheet" th:href="@{/css/output.css}" />
     <link
@@ -12,10 +11,14 @@
       rel="stylesheet"
     />
   </head>
-  <body class="min-h-screen flex flex-col items-center px-4 py-10 bg-gradient-to-b from-white to-blue-50">
+  <body
+    class="min-h-screen flex flex-col items-center px-4 py-10 bg-gradient-to-b from-white to-blue-50"
+  >
     <h1 class="text-4xl font-bold text-blue-600 mb-8">List Layanan</h1>
 
-    <div class="w-full max-w-5xl bg-white shadow-xl rounded-2xl overflow-hidden">
+    <div
+      class="w-full max-w-5xl bg-white shadow-xl rounded-2xl overflow-hidden"
+    >
       <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
         <thead class="bg-blue-100 text-blue-800 text-base font-semibold">
           <tr>
@@ -25,21 +28,28 @@
             <th class="px-6 py-4">Aksi</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200" th:each="layanan, stat : ${listLayanan}">
+        <tbody
+          class="divide-y divide-gray-200"
+          th:each="layanan, stat : ${listLayanan}"
+        >
           <tr class="hover:bg-blue-50 transition">
             <td class="px-6 py-4" th:text="${stat.index + 1}">1</td>
-            <td class="px-6 py-4" th:text="${layanan.namaLayanan}">Cuci Kering</td>
+            <td class="px-6 py-4" th:text="${layanan.namaLayanan}">
+              Cuci Kering
+            </td>
             <td class="px-6 py-4" th:text="${layanan.hargaPerKg}">Rp10.000</td>
             <td class="px-6 py-4 space-x-3">
               <a
                 th:href="@{'/admin/layanan/edit/' + ${layanan.id}}"
                 class="text-blue-600 hover:text-blue-800 font-medium"
-              >Edit</a>
+                >Edit</a
+              >
               <a
                 th:href="@{'/admin/layanan/delete/' + ${layanan.id}}"
                 onclick="return confirm('Yakin ingin hapus layanan ini?')"
                 class="text-red-500 hover:text-red-700 font-medium"
-              >Delete</a>
+                >Delete</a
+              >
             </td>
           </tr>
         </tbody>
