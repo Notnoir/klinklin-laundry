@@ -9,59 +9,53 @@
         .bubble {
             border-radius: 50%;
             position: absolute;
-            opacity: 0.6;
+            /* opacity: 0.6; */
             animation: float 6s ease-in-out infinite;
         }
         
         .bubble-1 {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #3B82F6, #60A5FA);
+            width: 100px;
+            height: 100px;
             top: 15%;
             left: 10%;
             animation-delay: 0s;
         }
         
         .bubble-2 {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #60A5FA, #93C5FD);
+            width: 140px;
+            height: 140px;
             top: 20%;
             right: 15%;
             animation-delay: 1s;
         }
         
         .bubble-3 {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #93C5FD, #DBEAFE);
+            width: 120px;
+            height: 120px;
             bottom: 20%;
             left: 8%;
             animation-delay: 2s;
         }
         
         .bubble-4 {
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(135deg, #3B82F6, #93C5FD);
+            width: 100px;
+            height: 100px;
             bottom: 15%;
             right: 20%;
             animation-delay: 3s;
         }
         
         .bubble-5 {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #60A5FA, #DBEAFE);
+            width: 100px;
+            height: 100px;
             top: 60%;
             right: 10%;
             animation-delay: 4s;
         }
         
         .bubble-6 {
-            width: 25px;
-            height: 25px;
-            background: linear-gradient(135deg, #93C5FD, #DBEAFE);
+            width: 125px;
+            height: 125px;
             top: 40%;
             left: 15%;
             animation-delay: 5s;
@@ -101,12 +95,24 @@
 </head>
 <body class="min-h-screen bg-gradient-to-br from-blue-50 to-white relative overflow-hidden">
     <!-- Floating Bubbles -->
-    <div class="bubble bubble-1"></div>
-    <div class="bubble bubble-2"></div>
-    <div class="bubble bubble-3"></div>
-    <div class="bubble bubble-4"></div>
-    <div class="bubble bubble-5"></div>
-    <div class="bubble bubble-6"></div>
+    <div class="bubble bubble-1">
+      <img th:src ="@{/img/bubble1.png}" alt="">
+    </div>
+    <div class="bubble bubble-2">
+      <img th:src ="@{/img/bubble2.png}" alt="">
+    </div>
+    <div class="bubble bubble-3">
+      <img th:src ="@{/img/bubble1.png}" alt="">
+    </div>
+    <div class="bubble bubble-4">
+      <img th:src ="@{/img/bubble3.png}" alt="">
+    </div>
+    <div class="bubble bubble-5">
+      <img th:src ="@{/img/bubble4.png}" alt="">
+    </div>
+    <div class="bubble bubble-6">
+      <img th:src ="@{/img/bubble3.png}" alt="">
+    </div>
     
     <!-- Main Content -->
     <div class="relative z-10 flex items-center justify-center min-h-screen px-6 py-12">
