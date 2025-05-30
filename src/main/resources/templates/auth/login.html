@@ -9,7 +9,6 @@
         .bubble {
             border-radius: 50%;
             position: absolute;
-            /* opacity: 0.6; */
             animation: float 6s ease-in-out infinite;
         }
         
@@ -93,7 +92,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-blue-50 to-white relative overflow-hidden">
+<body class="min-h-screen relative overflow-hidden">
     <!-- Floating Bubbles -->
     <div class="bubble bubble-1">
       <img th:src ="@{/img/bubble1.png}" alt="">
@@ -120,8 +119,8 @@
             <!-- Login Card -->
             <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-blue-100">
                 <div class="text-center mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-                        <span class="text-white text-2xl font-bold">K</span>
+                    <div class="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                        <img th:src="@{/img/logo2.png}" alt="">
                     </div>
                     <h2 class="text-2xl font-bold text-gray-800 mb-2">Selamat Datang Kembali</h2>
                     <p class="text-gray-600">Masuk ke akun KlinKlin Anda</p>

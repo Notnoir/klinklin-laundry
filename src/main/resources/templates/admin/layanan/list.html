@@ -1,39 +1,52 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="bg-white text-gray-800">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>List Layanan - KlinKlin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <h1>List Layanan</h1>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama Layanan</th>
-          <th>Harga/Kg</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Loop through the list of layanan -->
-        <tr th:each="layanan, stat : ${listLayanan}">
-          <td th:text="${stat.index + 1}">1</td>
-          <td th:text="${layanan.namaLayanan}"></td>
-          <td th:text="${layanan.hargaPerKg}"></td>
-          <td>
-            <a th:href="@{'/admin/layanan/edit/' + ${layanan.id}}">Edit</a>
-            <a
-              th:href="@{'/admin/layanan/delete/' + ${layanan.id}}"
-              onclick="return confirm('Yakin ingin hapus layanan ini?')"
-              >Delete</a
-            >
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <body class="min-h-screen flex flex-col items-center px-4 py-10 bg-gradient-to-b from-white to-blue-50">
+    <h1 class="text-4xl font-bold text-blue-600 mb-8">List Layanan</h1>
 
-    <!-- Link to add new layanan -->
-    <a href="/admin/layanan/create">Add New Layanan</a>
+    <div class="w-full max-w-5xl bg-white shadow-xl rounded-2xl overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
+        <thead class="bg-blue-100 text-blue-800 text-base font-semibold">
+          <tr>
+            <th class="px-6 py-4">No</th>
+            <th class="px-6 py-4">Nama Layanan</th>
+            <th class="px-6 py-4">Harga/Kg</th>
+            <th class="px-6 py-4">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200" th:each="layanan, stat : ${listLayanan}">
+          <tr class="hover:bg-blue-50 transition">
+            <td class="px-6 py-4" th:text="${stat.index + 1}">1</td>
+            <td class="px-6 py-4" th:text="${layanan.namaLayanan}">Cuci Kering</td>
+            <td class="px-6 py-4" th:text="${layanan.hargaPerKg}">Rp10.000</td>
+            <td class="px-6 py-4 space-x-3">
+              <a
+                th:href="@{'/admin/layanan/edit/' + ${layanan.id}}"
+                class="text-blue-600 hover:text-blue-800 font-medium"
+              >Edit</a>
+              <a
+                th:href="@{'/admin/layanan/delete/' + ${layanan.id}}"
+                onclick="return confirm('Yakin ingin hapus layanan ini?')"
+                class="text-red-500 hover:text-red-700 font-medium"
+              >Delete</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-8">
+      <a
+        href="/admin/layanan/create"
+        class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-3 rounded-full shadow-lg transition"
+      >
+        + Tambah Layanan
+      </a>
+    </div>
   </body>
 </html>
