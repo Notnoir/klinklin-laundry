@@ -27,14 +27,9 @@
           <td th:text="${reservasi.namaLayanan}">Layanan</td>
           <td th:text="${reservasi.status}">Status</td>
           <td>
-            <a th:href="@{'/kasir/reservasi/detail/' + ${reservasi.id}}"
-              >Detail</a
-            >
+            <a th:href="@{'/kasir/reservasi/detail/' + ${reservasi.id}}">Detail</a>
 
-            <form
-              th:action="@{/kasir/reservasi/{id}/status(id=${reservasi.id})}"
-              method="post"
-            >
+            <form th:action="@{/kasir/reservasi/{id}/status(id=${reservasi.id})}" method="post">
               <div class="input-group">
                 <select name="status" class="form-select">
                   <option value="MENUNGGU">MENUNGGU</option>
@@ -46,12 +41,7 @@
                 <button type="submit" class="btn btn-primary">Update</button>
               </div>
             </form>
-            <a
-              th:if="${reservasi.status == 'SELESAI'}"
-              th:href="@{'/kasir/transaksi/from-reservasi/' + ${reservasi.id}}"
-              class="btn btn-success"
-              >Buat Transaksi</a
-            >
+            <a th:if="${reservasi.status == 'SELESAI'}" th:href="@{'/kasir/transaksi/from-reservasi/' + ${reservasi.id}}" class="btn btn-success">Buat Transaksi</a>
           </td>
         </tr>
         <tr th:if="${#lists.isEmpty(reservasiList)}">
