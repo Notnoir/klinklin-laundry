@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - KlinKlin Laundry</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" th:href="@{/style/style.css}" />
     <link rel="stylesheet" th:href="@{/css/output.css}" />
     <link
@@ -73,16 +72,6 @@
             50% {
                 transform: translateY(-20px) scale(1.1);
             }
-        }
-        
-        .input-focus:focus {
-            border-color: #3B82F6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        
-        .btn-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
         }
         
         .alert-success {
@@ -223,7 +212,7 @@
                     <!-- Login Button -->
                     <button
                         type="submit"
-                        class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 px-4 rounded-lg font-medium btn-hover transition-all duration-200"
+                        class="w-full bg-blue-600 hover:bg-blue-800 hover:cursor-pointer text-white py-3 px-4 rounded-lg font-medium btn-hover transition-all duration-200"
                     >
                         Login
                     </button>

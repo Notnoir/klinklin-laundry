@@ -12,75 +12,6 @@
     <link rel="stylesheet" th:href="@{/style/style.css}" />
     <link rel="stylesheet" th:href="@{/css/output.css}" />
     <style>
-      body {
-        font-family: "Nunito", sans-serif;
-      }
-
-      .bubble {
-        border-radius: 50%;
-        position: absolute;
-        animation: float 8s ease-in-out infinite;
-        opacity: 0.6;
-      }
-
-      .bubble-1 {
-        width: 80px;
-        height: 80px;
-        top: 10%;
-        left: 5%;
-        animation-delay: 0s;
-      }
-
-      .bubble-2 {
-        width: 120px;
-        height: 120px;
-        top: 15%;
-        right: 10%;
-        animation-delay: 2s;
-      }
-
-      .bubble-3 {
-        width: 100px;
-        height: 100px;
-        bottom: 15%;
-        left: 8%;
-        animation-delay: 4s;
-      }
-
-      .bubble-4 {
-        width: 90px;
-        height: 90px;
-        bottom: 20%;
-        right: 15%;
-        animation-delay: 6s;
-      }
-
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0px) scale(1);
-        }
-        50% {
-          transform: translateY(-15px) scale(1.05);
-        }
-      }
-
-      .card-hover:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        transition: all 0.3s ease;
-      }
-
-      .btn-primary:hover {
-        background: linear-gradient(135deg, #1d4ed8, #1e40af);
-        transform: translateY(-1px);
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
-      }
-
       .status-badge {
         display: inline-flex;
         align-items: center;
@@ -115,78 +46,21 @@
         color: #4338ca;
         border: 1px solid #6366f1;
       }
-
-      .fade-in {
-        animation: fadeIn 0.6s ease-out forwards;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .empty-state {
-        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-      }
     </style>
   </head>
   <body
     class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 relative overflow-x-hidden"
   >
-    <!-- Floating Bubbles -->
-    <div
-      class="bubble bubble-1 bg-gradient-to-br from-blue-200 to-blue-300"
-    ></div>
-    <div
-      class="bubble bubble-2 bg-gradient-to-br from-purple-200 to-blue-200"
-    ></div>
-    <div
-      class="bubble bubble-3 bg-gradient-to-br from-indigo-200 to-purple-200"
-    ></div>
-    <div
-      class="bubble bubble-4 bg-gradient-to-br from-blue-300 to-indigo-300"
-    ></div>
-
     <!-- Main Content -->
     <div class="relative z-10 container mx-auto px-4 py-8 sm:px-6 lg:px-8">
       <!-- Header Section -->
       <div class="text-center mb-12 fade-in">
-        <div class="flex items-center justify-center mb-6">
-          <div
-            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg"
-          >
-            <svg
-              class="w-8 h-8 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12h6m2 0a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
-          </div>
-        </div>
-        <h1 class="text-4xl font-bold text-gray-800 mb-4">
-          Daftar Transaksi Saya
-        </h1>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Kelola dan pantau semua transaksi laundry Anda dengan mudah
-        </p>
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Daftar Transaksi</h1>
       </div>
 
       <!-- Transaction Table Card -->
       <div
-        class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-blue-100 overflow-hidden card-hover transition-all duration-300 fade-in"
+        class="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-blue-100 overflow-hidden card-hover transition-all duration-300 fade-in"
       >
         <!-- Table Container -->
         <div class="overflow-x-auto">
@@ -240,7 +114,7 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span
                     class="text-sm font-medium text-gray-900"
-                    th:text="'#' + ${transaksi.id}"
+                    th:text="${transaksi.id}"
                     >#001</span
                   >
                 </td>
@@ -268,10 +142,7 @@
                   >
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div
-                    class="text-lg font-bold text-green-600"
-                    th:text="${transaksi.totalFormatted}"
-                  >
+                  <div class="text-md" th:text="${transaksi.totalFormatted}">
                     Rp 35.000
                   </div>
                 </td>
