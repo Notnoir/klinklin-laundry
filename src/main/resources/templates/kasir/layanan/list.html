@@ -1,27 +1,37 @@
-<html lang="en">
+<html lang="en" class="bg-white text-gray-800">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Daftar Layanan</title>
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <h1>Daftar Layanan</h1>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama Layanan</th>
-          <th>Harga/Kg</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Loop through the list of layanan -->
-        <tr th:each="layanan, stat : ${listLayanan}">
-          <td th:text="${stat.index + 1}">1</td>
-          <td th:text="${layanan.namaLayanan}"></td>
-          <td th:text="${layanan.hargaPerKg}"></td>
-        </tr>
-      </tbody>
-    </table>
+  <body
+    class="min-h-screen flex flex-col items-center px-4 py-10 bg-gradient-to-b from-white to-blue-50 font-sans"
+  >
+    <h1 class="text-4xl font-bold text-blue-600 mb-8">Daftar Layanan</h1>
+
+    <div class="w-full max-w-5xl bg-white shadow-md rounded-lg overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
+        <thead class="bg-blue-100 text-blue-800 text-base font-semibold">
+          <tr>
+            <th class="px-6 py-4">No</th>
+            <th class="px-6 py-4">Nama Layanan</th>
+            <th class="px-6 py-4">Harga/Kg</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200" th:each="layanan, stat : ${listLayanan}">
+          <tr class="hover:bg-blue-50 transition">
+            <td class="px-6 py-4" th:text="${stat.index + 1}">1</td>
+            <td class="px-6 py-4" th:text="${layanan.namaLayanan}"></td>
+            <td class="px-6 py-4" th:text="${layanan.hargaPerKg}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </body>
 </html>
