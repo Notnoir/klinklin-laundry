@@ -23,60 +23,64 @@ import LaundryWeb.KlinKlin.repository.UserRepository;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-    @Autowired
-    private UserRepository userRepository;
+        @Autowired
+        private UserRepository userRepository;
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return email -> {
-            User user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-            return new org.springframework.security.core.userdetails.User(
-                    user.getEmail(),
-                    user.getPassword(),
-                    List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
-        };
-    }
+        @Bean
+        public UserDetailsService userDetailsService() {
+                return email -> {
+                        User user = userRepository.findByEmail(email)
+                                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                        return new org.springframework.security.core.userdetails.User(
+                                        user.getEmail(),
+                                        user.getPassword(),
+                                        List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
+                };
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder encoder,
-            UserDetailsService uds) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(uds)
-                .passwordEncoder(encoder)
-                .and().build();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder encoder,
+                        UserDetailsService uds) throws Exception {
+                return http.getSharedObject(AuthenticationManagerBuilder.class)
+                                .userDetailsService(uds)
+                                .passwordEncoder(encoder)
+                                .and().build();
+        }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/css/**", "/js/**", "/img/**", "/style/**", "/").permitAll()
-                        // Khusus ADMIN
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers("/auth/**", "/css/**", "/js/**", "/img/**",
+                                                                "/style/**", "/")
+                                                .permitAll()
+                                                // Khusus ADMIN
+                                                .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                        // Khusus KASIR
-                        .requestMatchers("/kasir/**").hasRole("KASIR")
+                                                // Khusus KASIR
+                                                .requestMatchers("/kasir/**").hasRole("KASIR")
 
-                        // Khusus PELANGGAN
-                        .requestMatchers("/pelanggan/**").hasRole("PELANGGAN")
-                        .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .loginPage("/auth/login")
-                        .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/dashboard", true)
-                        .failureUrl("/auth/login?error=true")
-                        .permitAll())
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/auth/login?logout=true")
-                        .permitAll());
-        return http.build();
-    }
+                                                // Khusus PELANGGAN
+                                                .requestMatchers("/pelanggan/**").hasRole("PELANGGAN")
+                                                .anyRequest().authenticated())
+                                .formLogin(form -> form
+                                                .loginPage("/auth/login")
+                                                .loginProcessingUrl("/login")
+                                                .defaultSuccessUrl("/dashboard", true)
+                                                .failureUrl("/auth/login?error=true")
+                                                .permitAll())
+                                .logout(logout -> logout
+                                                .logoutUrl("/logout")
+                                                .logoutSuccessUrl("/auth/login?logout=true")
+                                                .invalidateHttpSession(true)
+                                                .deleteCookies("JSESSIONID")
+                                                .permitAll());
+                return http.build();
+        }
 }
