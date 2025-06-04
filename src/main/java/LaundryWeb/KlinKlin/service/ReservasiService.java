@@ -9,6 +9,8 @@ import LaundryWeb.KlinKlin.model.Reservasi;
 import LaundryWeb.KlinKlin.model.User;
 import LaundryWeb.KlinKlin.repository.LayananRepository;
 import LaundryWeb.KlinKlin.repository.ReservasiRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -105,6 +107,16 @@ public class ReservasiService {
                 throw new RuntimeException("Status tidak valid: " + statusBaru);
             }
         }).orElseThrow(() -> new RuntimeException("Reservasi tidak ditemukan dengan ID: " + reservasiId));
+    }
+
+    public Page<ReservasiDTO> getReservasiPage(Pageable pageable) {
+        return reservasiRepository.findAll(pageable)
+                .map(this::toDTO); // langsung map ke DTO
+    }
+
+    public Page<ReservasiDTO> searchReservasi(String keyword, Pageable pageable) {
+        return reservasiRepository.searchByKeyword(keyword, pageable)
+                .map(this::toDTO);
     }
 
 }

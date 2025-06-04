@@ -17,6 +17,7 @@ import LaundryWeb.KlinKlin.repository.LayananRepository;
 import LaundryWeb.KlinKlin.repository.UserRepository;
 import LaundryWeb.KlinKlin.model.User.Role;
 import LaundryWeb.KlinKlin.model.Transaksi.Status;
+import org.springframework.data.domain.Page;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,8 +34,25 @@ public class AdminTransaksiController {
 
     // Menampilkan semua transaksi
     @GetMapping
-    public String listTransaksi(Model model) {
-        model.addAttribute("transaksiList", transaksiService.findAll());
+    public String listTransaksi(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            Model model) {
+
+        int pageSize = 5;
+        Page<TransaksiDTO> transaksiPage;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            transaksiPage = transaksiService.searchTransaksi(keyword.trim(), page, pageSize);
+            model.addAttribute("keyword", keyword);
+        } else {
+            transaksiPage = transaksiService.findPaginated(page, pageSize);
+        }
+
+        model.addAttribute("transaksiList", transaksiPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", transaksiPage.getTotalPages());
+
         return "admin/transaksi/list";
     }
 

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
 
 import LaundryWeb.KlinKlin.dto.LayananDTO;
 import LaundryWeb.KlinKlin.service.LayananService;
@@ -23,9 +25,25 @@ public class AdminLayananController {
     private LayananService layananService;
 
     @GetMapping
-    public String listLayanan(Model model) {
-        List<LayananDTO> listLayanan = layananService.findAll();
-        model.addAttribute("listLayanan", listLayanan);
+    public String listLayanan(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String search,
+            Model model) {
+
+        int pageSize = 5;
+        Page<LayananDTO> layananPage;
+
+        if (search != null && !search.isEmpty()) {
+            layananPage = layananService.searchByName(search, page, pageSize);
+            model.addAttribute("search", search); // agar form tetap menampilkan kata kunci pencarian
+        } else {
+            layananPage = layananService.findPaginated(page, pageSize);
+        }
+
+        model.addAttribute("layananPage", layananPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", layananPage.getTotalPages());
+
         return "admin/layanan/list";
     }
 

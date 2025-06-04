@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,6 +13,8 @@ import java.util.List;
 
 public interface TransaksiRepository extends JpaRepository<Transaksi, String> {
     List<Transaksi> findAllByDeletedAtIsNull();
+
+    Page<Transaksi> findAllByDeletedAtIsNull(Pageable pageable);
 
     List<Transaksi> findByPelanggan_IdAndDeletedAtIsNull(String pelangganId);
 
@@ -26,5 +29,15 @@ public interface TransaksiRepository extends JpaRepository<Transaksi, String> {
 
     @Query(value = "SELECT * FROM transaksi WHERE deleted_at IS NULL ORDER BY tanggal_transaksi DESC", nativeQuery = true)
     List<Transaksi> findTopByDeletedAtIsNull(Pageable pageable);
+
+    // Cari berdasarkan nama pelanggan (menggunakan relasi ke User)
+    @Query("SELECT t FROM Transaksi t WHERE t.deletedAt IS NULL AND LOWER(t.pelanggan.fullName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    Page<Transaksi> searchByPelangganName(@Param("keyword") String keyword, Pageable pageable);
+
+    // Alternatif, jika ingin search berdasarkan status juga:
+    @Query("SELECT t FROM Transaksi t WHERE t.deletedAt IS NULL AND " +
+            "(LOWER(t.namaPelanggan) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(t.status) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+    Page<Transaksi> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
 }

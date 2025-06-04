@@ -1,7 +1,5 @@
 package LaundryWeb.KlinKlin.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
 
 import LaundryWeb.KlinKlin.dto.UserDTO;
 import LaundryWeb.KlinKlin.service.UserService;
@@ -24,9 +24,23 @@ public class AdminUserViewController {
     private UserService userService;
 
     @GetMapping
-    public String list(Model model) {
-        List<UserDTO> users = userService.findAll();
-        model.addAttribute("users", users);
+    public String list(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String keyword,
+            Model model) {
+        int pageSize = 5;
+        Page<UserDTO> userPage;
+
+        if (keyword != null && !keyword.isBlank()) {
+            userPage = userService.searchUsers(keyword, page, pageSize);
+        } else {
+            userPage = userService.findPaginated(page, pageSize);
+        }
+
+        model.addAttribute("users", userPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", userPage.getTotalPages());
+        model.addAttribute("keyword", keyword);
+
         return "admin/users/list";
     }
 

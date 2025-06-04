@@ -4,8 +4,11 @@ import LaundryWeb.KlinKlin.dto.LayananDTO;
 import LaundryWeb.KlinKlin.model.Layanan;
 import LaundryWeb.KlinKlin.repository.LayananRepository;
 import LaundryWeb.KlinKlin.util.MapperUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,6 +54,19 @@ public class LayananService {
         existing.setHargaPerKg(dto.getHargaPerKg());
 
         layananRepository.save(existing);
+    }
+
+    public Page<LayananDTO> findPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Layanan> layananPage = layananRepository.findAllByDeletedAtIsNull(pageable);
+        return layananPage.map(MapperUtil::toDTO);
+    }
+
+    public Page<LayananDTO> searchByName(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Layanan> result = layananRepository.findByNamaLayananContainingIgnoreCaseAndDeletedAtIsNull(keyword,
+                pageable);
+        return result.map(MapperUtil::toDTO);
     }
 
 }

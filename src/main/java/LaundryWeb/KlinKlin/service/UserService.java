@@ -8,11 +8,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import LaundryWeb.KlinKlin.dto.UserDTO;
 import LaundryWeb.KlinKlin.util.MapperUtil;
 import LaundryWeb.KlinKlin.model.User.Role;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class UserService {
@@ -90,6 +95,18 @@ public class UserService {
 
     public User getById(String id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    public Page<UserDTO> findPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<User> userPage = userRepository.findAllByDeletedAtIsNull(pageable); // pastikan method ini tersedia
+        return userPage.map(MapperUtil::toDTO);
+    }
+
+    public Page<UserDTO> searchUsers(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<User> userPage = userRepository.searchByKeyword(keyword, pageable);
+        return userPage.map(MapperUtil::toDTO);
     }
 
 }

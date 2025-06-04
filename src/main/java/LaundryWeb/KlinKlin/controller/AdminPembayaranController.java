@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import LaundryWeb.KlinKlin.dto.PembayaranDTO;
 import LaundryWeb.KlinKlin.model.Pembayaran;
@@ -28,9 +30,26 @@ public class AdminPembayaranController {
     private TransaksiService transaksiService;
 
     @GetMapping
-    public String listPembayaran(Model model) {
-        List<PembayaranDTO> listPembayaran = pembayaranService.findAll();
-        model.addAttribute("listPembayaran", listPembayaran);
+    public String listPembayaran(
+            Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(name = "keyword", required = false) String keyword) {
+
+        Page<PembayaranDTO> pembayaranPage;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            pembayaranPage = pembayaranService.search(keyword, page, size);
+        } else {
+            pembayaranPage = pembayaranService.findAllPaged(page, size);
+        }
+
+        model.addAttribute("listPembayaran", pembayaranPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", pembayaranPage.getTotalPages());
+        model.addAttribute("totalItems", pembayaranPage.getTotalElements());
+        model.addAttribute("keyword", keyword);
+
         return "admin/pembayaran/list";
     }
 
