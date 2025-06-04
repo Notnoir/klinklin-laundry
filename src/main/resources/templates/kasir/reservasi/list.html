@@ -3,53 +3,61 @@
   <head>
     <title>Daftar Reservasi</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
   </head>
-  <body>
-    <h1>Daftar Reservasi Anda</h1>
+  <body class="min-h-screen bg-gradient-to-b from-white to-blue-50 px-6 py-10 text-gray-800 font-sans">
+    <div class="max-w-7xl mx-auto bg-white shadow-md rounded-xl p-8">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-blue-600">Daftar Reservasi Anda</h1>
+        <a th:href="@{/kasir/reservasi/create}" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition"> + Buat Reservasi Baru </a>
+      </div>
 
-    <table border="1" cellpadding="8" cellspacing="0">
-      <thead>
-        <tr>
-          <th>ID Reservasi</th>
-          <th>Nama Pelanggan</th>
-          <th>Tanggal Reservasi</th>
-          <th>Layanan</th>
-          <th>Status</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="reservasi : ${reservasiList}">
-          <td th:text="${reservasi.id}">ID Reservasi</td>
-          <td th:text="${reservasi.nama}">Nama Pelanggan</td>
-          <td th:text="${reservasi.tanggalReservasiFormatted}">Tanggal</td>
-          <td th:text="${reservasi.namaLayanan}">Layanan</td>
-          <td th:text="${reservasi.status}">Status</td>
-          <td>
-            <a th:href="@{'/kasir/reservasi/detail/' + ${reservasi.id}}">Detail</a>
+      <div class="overflow-x-auto bg-white shadow-md rounded-md">
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+          <thead class="bg-blue-100 text-gray-700 text-left">
+            <tr>
+              <th class="px-6 py-3">ID Reservasi</th>
+              <th class="px-6 py-3">Nama Pelanggan</th>
+              <th class="px-6 py-3">Tanggal Reservasi</th>
+              <th class="px-6 py-3">Layanan</th>
+              <th class="px-6 py-3">Status</th>
+              <th class="px-6 py-3">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100 bg-white">
+            <tr th:each="reservasi : ${reservasiList}" class="hover:bg-blue-50 transition">
+              <td class="px-6 py-4" th:text="${reservasi.id}">ID Reservasi</td>
+              <td class="px-6 py-4" th:text="${reservasi.nama}">Nama Pelanggan</td>
+              <td class="px-6 py-4" th:text="${reservasi.tanggalReservasiFormatted}">Tanggal</td>
+              <td class="px-6 py-4" th:text="${reservasi.namaLayanan}">Layanan</td>
+              <td class="px-6 py-4" th:text="${reservasi.status}">Status</td>
+              <td class="px-6 py-4 space-y-2">
+                <a th:href="@{'/kasir/reservasi/detail/' + ${reservasi.id}}" class="text-blue-600 hover:underline font-medium block"> Detail </a>
 
-            <form th:action="@{/kasir/reservasi/{id}/status(id=${reservasi.id})}" method="post">
-              <div class="input-group">
-                <select name="status" class="form-select">
-                  <option value="MENUNGGU">MENUNGGU</option>
-                  <option value="DIJEMPUT">DIJEMPUT</option>
-                  <option value="DIPROSES">DIPROSES</option>
-                  <option value="SELESAI">SELESAI</option>
-                  <option value="DIBATALKAN">DIBATALKAN</option>
-                </select>
-                <button type="submit" class="btn btn-primary">Update</button>
-              </div>
-            </form>
-            <a th:if="${reservasi.status == 'SELESAI'}" th:href="@{'/kasir/transaksi/from-reservasi/' + ${reservasi.id}}" class="btn btn-success">Buat Transaksi</a>
-          </td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(reservasiList)}">
-          <td colspan="6">Belum ada reservasi.</td>
-        </tr>
-      </tbody>
-    </table>
+                <form th:action="@{/kasir/reservasi/{id}/status(id=${reservasi.id})}" method="post" class="flex space-x-2 items-center">
+                  <select name="status" class="form-select border rounded px-2 py-1 text-sm">
+                    <option value="MENUNGGU">MENUNGGU</option>
+                    <option value="DIJEMPUT">DIJEMPUT</option>
+                    <option value="DIPROSES">DIPROSES</option>
+                    <option value="SELESAI">SELESAI</option>
+                    <option value="DIBATALKAN">DIBATALKAN</option>
+                  </select>
+                  <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition text-sm">Update</button>
+                </form>
 
-    <p><a th:href="@{/kasir/reservasi/create}">Buat Reservasi Baru</a></p>
+                <a th:if="${reservasi.status == 'SELESAI'}" th:href="@{'/kasir/transaksi/from-reservasi/' + ${reservasi.id}}" class="inline-block bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition text-sm">
+                  Buat Transaksi
+                </a>
+              </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(reservasiList)}">
+              <td colspan="6" class="px-6 py-4 text-center text-gray-500">Belum ada reservasi.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </body>
 </html>

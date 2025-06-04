@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@tailwindcss/cli": "^4.1.7",
+    "klinklin": "file:",
     "tailwindcss": "^4.1.7"
   }
 }

@@ -1,46 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
+    <meta charset="UTF-8" />
     <title>Daftar Transaksi</title>
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
   </head>
-  <body>
-    <h1>Daftar Transaksi</h1>
-    <a href="/kasir/transaksi/create">+ Tambah Transaksi</a>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nama Pelanggan</th>
-          <th>Layanan</th>
-          <th>Berat (kg)</th>
-          <th>Total</th>
-          <th>Status</th>
-          <th>Tanggal</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="transaksi : ${transaksiList}">
-          <td th:text="${transaksi.id}"></td>
-          <td th:text="${transaksi.namaPelanggan}"></td>
-          <td th:text="${transaksi.layananNama}"></td>
-          <td th:text="${transaksi.beratKg}"></td>
-          <td th:text="${transaksi.totalFormatted}"></td>
-          <td th:text="${transaksi.status}"></td>
-          <td th:text="${transaksi.tanggalTransaksiFormatted}"></td>
+  <body class="min-h-screen bg-gradient-to-b from-white to-blue-50 px-6 py-10 text-gray-800">
+    <div class="max-w-7xl mx-auto bg-white shadow-md rounded-xl p-8">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-blue-600">Daftar Transaksi</h1>
+        <a href="/kasir/transaksi/create" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition"> + Tambah Transaksi </a>
+      </div>
 
-          <td>
-            <a th:href="@{'/kasir/transaksi/' + ${transaksi.id}}">Detail</a> |
-            <a
-              th:href="@{'/kasir/transaksi/delete/' + ${transaksi.id}}"
-              onclick="return confirm('Yakin ingin menghapus transaksi ini?')"
-              >Hapus</a
-            >
-            |
-            <a th:href="@{'/kasir/transaksi/edit/' + ${transaksi.id}}">Edit</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="overflow-x-auto bg-white shadow-md rounded-md">
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+          <thead class="bg-blue-100 text-gray-700 text-left">
+            <tr>
+              <th class="px-6 py-3">ID</th>
+              <th class="px-6 py-3">Nama Pelanggan</th>
+              <th class="px-6 py-3">Layanan</th>
+              <th class="px-6 py-3">Berat (kg)</th>
+              <th class="px-6 py-3">Total</th>
+              <th class="px-6 py-3">Status</th>
+              <th class="px-6 py-3">Tanggal</th>
+              <th class="px-6 py-3">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100 bg-white">
+            <tr th:each="transaksi : ${transaksiList}" class="hover:bg-blue-50 transition">
+              <td class="px-6 py-4" th:text="${transaksi.id}"></td>
+              <td class="px-6 py-4" th:text="${transaksi.namaPelanggan}"></td>
+              <td class="px-6 py-4" th:text="${transaksi.layananNama}"></td>
+              <td class="px-6 py-4" th:text="${transaksi.beratKg}"></td>
+              <td class="px-6 py-4" th:text="${transaksi.totalFormatted}"></td>
+              <td class="px-6 py-4" th:text="${transaksi.status}"></td>
+              <td class="px-6 py-4" th:text="${transaksi.tanggalTransaksiFormatted}"></td>
+              <td class="px-6 py-4 space-x-2">
+                <a th:href="@{'/kasir/transaksi/' + ${transaksi.id}}" class="text-blue-600 hover:underline font-medium">Detail</a>
+                <a th:href="@{'/kasir/transaksi/edit/' + ${transaksi.id}}" class="text-green-600 hover:underline font-medium">Edit</a>
+                <a th:href="@{'/kasir/transaksi/delete/' + ${transaksi.id}}" class="text-red-600 hover:underline font-medium" onclick="return confirm('Yakin ingin menghapus transaksi ini?')">Hapus</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </body>
 </html>
