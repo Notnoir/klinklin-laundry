@@ -1,6 +1,7 @@
 package LaundryWeb.KlinKlin.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ public class KasirDashboardController {
 
     @GetMapping("/dashboard")
     public String dashboardKasir(Model model) {
+        // data lama
         int jumlahTransaksi = transaksiService.countTransaksiHariIni();
         int totalPemasukan = transaksiService.getTotalPemasukanHariIni();
 
@@ -29,6 +31,9 @@ public class KasirDashboardController {
 
         List<TransaksiDTO> transaksiTerbaru = transaksiService.getTransaksiTerbaru(5);
 
+        // Data pemasukan per jam
+        Map<Integer, Integer> pemasukanPerJam = transaksiService.getPemasukanPerJamHariIni();
+
         model.addAttribute("jumlahTransaksi", jumlahTransaksi);
         model.addAttribute("totalPemasukan", totalPemasukan);
         model.addAttribute("menunggu", menunggu);
@@ -36,6 +41,9 @@ public class KasirDashboardController {
         model.addAttribute("selesai", selesai);
         model.addAttribute("transaksiTerbaru", transaksiTerbaru);
 
+        model.addAttribute("pemasukanPerJam", pemasukanPerJam);
+
         return "kasir/dashboard";
     }
+
 }

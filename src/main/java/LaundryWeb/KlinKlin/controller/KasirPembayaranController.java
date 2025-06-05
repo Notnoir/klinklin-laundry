@@ -82,7 +82,7 @@ public class KasirPembayaranController {
         }
 
         PembayaranDTO saved = pembayaranService.save(dto); // Menyimpan dan mendapatkan ID
-        return "redirect:/kasir/pembayaran/" + saved.getId() + "/detail";
+        return "redirect:/kasir/pembayaran/" + saved.getId() + "/struk";
     }
 
     @GetMapping("/{id}/detail")

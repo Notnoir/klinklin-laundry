@@ -18,7 +18,9 @@ import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -183,6 +185,27 @@ public class TransaksiService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("tanggalTransaksi").descending());
         Page<Transaksi> transaksiPage = transaksiRepository.searchByKeyword(keyword, pageable);
         return transaksiPage.map(MapperUtil::toDTO);
+    }
+
+    public Map<Integer, Integer> getPemasukanPerJamHariIni() {
+        LocalDateTime awalHari = LocalDate.now().atStartOfDay();
+        LocalDateTime akhirHari = awalHari.plusDays(1);
+
+        Map<Integer, Integer> pemasukanPerJam = new HashMap<>();
+
+        // Inisialisasi jam 0-23 = 0
+        for (int i = 0; i < 24; i++) {
+            pemasukanPerJam.put(i, 0);
+        }
+
+        List<Object[]> result = transaksiRepository.sumTotalGroupByHour(awalHari, akhirHari);
+
+        for (Object[] row : result) {
+            Integer jam = (Integer) row[0];
+            BigDecimal total = (BigDecimal) row[1];
+            pemasukanPerJam.put(jam, total.intValue());
+        }
+        return pemasukanPerJam;
     }
 
 }

@@ -80,7 +80,10 @@ public class SecurityConfig {
                                                 .logoutSuccessUrl("/auth/login?logout=true")
                                                 .invalidateHttpSession(true)
                                                 .deleteCookies("JSESSIONID")
-                                                .permitAll());
+                                                .permitAll())
+                                .exceptionHandling(exception -> exception
+                                                .accessDeniedPage("/error/403") // ⬅️ Tambahkan baris ini
+                                );
                 return http.build();
         }
 }
