@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
 
 import LaundryWeb.KlinKlin.dto.LayananDTO;
 import LaundryWeb.KlinKlin.service.LayananService;
@@ -18,9 +20,25 @@ public class KasirLayananController {
     private LayananService layananService;
 
     @GetMapping
-    public String listLayanan(Model model) {
-        List<LayananDTO> listLayanan = layananService.findAll();
-        model.addAttribute("listLayanan", listLayanan);
+    public String listLayanan(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(required = false) String keyword,
+            Model model) {
+
+        Page<LayananDTO> layananPage;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            layananPage = layananService.searchByName(keyword, page, size);
+        } else {
+            layananPage = layananService.findPaginated(page, size);
+        }
+
+        model.addAttribute("layananPage", layananPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", layananPage.getTotalPages());
+        model.addAttribute("keyword", keyword);
+
         return "kasir/layanan/list";
     }
 }

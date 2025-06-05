@@ -2,6 +2,7 @@ package LaundryWeb.KlinKlin.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +33,26 @@ public class KasirTransaksiController {
 
     // Menampilkan semua transaksi
     @GetMapping
-    public String listTransaksi(Model model) {
-        model.addAttribute("transaksiList", transaksiService.findAll());
+    public String listTransaksi(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(name = "keyword", required = false) String keyword,
+            Model model) {
+
+        Page<TransaksiDTO> transaksiPage;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            transaksiPage = transaksiService.searchTransaksi(keyword, page, size);
+            model.addAttribute("keyword", keyword);
+        } else {
+            transaksiPage = transaksiService.findPaginated(page, size);
+        }
+
+        model.addAttribute("transaksiPage", transaksiPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", transaksiPage.getTotalPages());
+        model.addAttribute("totalItems", transaksiPage.getTotalElements());
+
         return "kasir/transaksi/list";
     }
 

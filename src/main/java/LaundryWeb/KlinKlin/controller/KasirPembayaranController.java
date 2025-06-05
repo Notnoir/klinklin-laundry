@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,9 +30,26 @@ public class KasirPembayaranController {
     private TransaksiService transaksiService;
 
     @GetMapping
-    public String listPembayaran(Model model) {
-        List<PembayaranDTO> listPembayaran = pembayaranService.findAll();
-        model.addAttribute("listPembayaran", listPembayaran);
+    public String listPembayaran(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "") String keyword,
+            Model model) {
+
+        int pageSize = 5;
+
+        Page<PembayaranDTO> pageResult;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            pageResult = pembayaranService.search(keyword, page, pageSize);
+        } else {
+            pageResult = pembayaranService.findAllPaged(page, pageSize);
+        }
+
+        model.addAttribute("listPembayaran", pageResult.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", pageResult.getTotalPages());
+        model.addAttribute("keyword", keyword);
+
         return "kasir/pembayaran/list";
     }
 

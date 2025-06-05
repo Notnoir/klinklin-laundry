@@ -3,6 +3,10 @@ package LaundryWeb.KlinKlin.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,9 +39,25 @@ public class KasirReservasiController {
 
     // List semua reservasi
     @GetMapping("/list")
-    public String listAllReservasi(Model model) {
-        List<ReservasiDTO> semuaReservasi = reservasiService.getAllReservasi();
-        model.addAttribute("reservasiList", semuaReservasi);
+    public String listReservasi(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String keyword,
+            Model model) {
+
+        int pageSize = 3;
+        Page<ReservasiDTO> reservasiPage;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            reservasiPage = reservasiService.searchReservasi(keyword, PageRequest.of(page, pageSize));
+        } else {
+            reservasiPage = reservasiService.getReservasiPage(PageRequest.of(page, pageSize));
+        }
+
+        model.addAttribute("reservasiPage", reservasiPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", reservasiPage.getTotalPages());
+        model.addAttribute("keyword", keyword); // supaya form pencarian tetap tampil
+
         return "kasir/reservasi/list";
     }
 
