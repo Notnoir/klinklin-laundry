@@ -41,8 +41,11 @@
   <body
     class="min-h-screen bg-gradient-to-br from-blue-50 to-white relative overflow-x-hidden"
   >
+    <header th:replace="pelanggan/layout :: navbar"></header>
     <!-- Main Content -->
-    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main
+      class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14"
+    >
       <!-- Page Header -->
       <div class="mb-4">
         <div class="flex justify-between items-center mb-3">
@@ -188,17 +191,5 @@
         </div>
       </div>
     </main>
-
-    <!-- Footer -->
-    <footer
-      class="relative z-10 mt-12 bg-white/90 backdrop-blur-sm border-t border-blue-100"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="text-center text-gray-600">
-          <p>&copy; 2024 KlinKlin Laundry. Semua hak cipta dilindungi.</p>
-          <p class="text-sm mt-1">Sistem Manajemen Reservasi Laundry</p>
-        </div>
-      </div>
-    </footer>
   </body>
 </html>

@@ -12,169 +12,84 @@
     <link rel="stylesheet" th:href="@{/style/style.css}" />
     <link rel="stylesheet" th:href="@{/css/output.css}" />
     <style>
-      .bubble {
-        border-radius: 50%;
-        position: absolute;
-        opacity: 0.4;
-        animation: float 8s ease-in-out infinite;
-      }
-
-      .bubble-1 {
-        width: 80px;
-        height: 80px;
-        top: 10%;
-        left: 5%;
-        animation-delay: 0s;
-      }
-
-      .bubble-2 {
-        width: 100px;
-        height: 100px;
-        top: 25%;
-        right: 8%;
-        animation-delay: 2s;
-      }
-
-      .bubble-3 {
-        width: 90px;
-        height: 90px;
-        bottom: 25%;
-        left: 6%;
-        animation-delay: 4s;
-      }
-
-      .bubble-4 {
-        width: 70px;
-        height: 70px;
-        bottom: 10%;
-        right: 12%;
-        animation-delay: 6s;
-      }
-
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0px) scale(1);
-        }
-        50% {
-          transform: translateY(-15px) scale(1.05);
-        }
+      body {
+        font-family: "Nunito", sans-serif;
       }
 
       .service-card {
-        transition: all 0.3s ease;
-        background: linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.95),
-          rgba(255, 255, 255, 0.85)
-        );
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(59, 130, 246, 0.1);
+        transition: all 0.2s ease;
+        background: white;
+        border: 1px solid #e5e7eb;
       }
 
       .service-card:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 25px 50px rgba(59, 130, 246, 0.2);
-        border-color: rgba(59, 130, 246, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        border-color: #3b82f6;
       }
 
       .service-icon {
-        background: linear-gradient(135deg, #3b82f6, #1e40af);
-        transition: all 0.3s ease;
+        background: #f3f4f6;
+        color: #6b7280;
+        transition: all 0.2s ease;
       }
 
       .service-card:hover .service-icon {
-        transform: scale(1.1) rotate(5deg);
-        background: linear-gradient(135deg, #1e40af, #1e3a8a);
+        background: #3b82f6;
+        color: white;
       }
 
-      .price-tag {
-        background: linear-gradient(135deg, #10b981, #059669);
-        position: relative;
-        overflow: hidden;
+      .price-badge {
+        background: #3b82f6;
+        color: white;
       }
 
-      .price-tag::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
+      .section-divider {
+        height: 1px;
         background: linear-gradient(
-          90deg,
+          to right,
           transparent,
-          rgba(255, 255, 255, 0.3),
+          #e5e7eb,
           transparent
         );
-        transition: left 0.5s;
-      }
-
-      .service-card:hover .price-tag::before {
-        left: 100%;
-      }
-
-      .floating-badge {
-        animation: bounce 2s infinite;
-      }
-
-      @keyframes bounce {
-        0%,
-        20%,
-        50%,
-        80%,
-        100% {
-          transform: translateY(0);
-        }
-        40% {
-          transform: translateY(-10px);
-        }
-        60% {
-          transform: translateY(-5px);
-        }
       }
     </style>
   </head>
-  <body
-    class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 relative overflow-x-hidden"
-  >
+  <body class="min-h-screen bg-gray-50">
+    <header th:replace="pelanggan/layout :: navbar"></header>
+
     <!-- Main Content -->
-    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
       <!-- Hero Section -->
-      <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-          Pilih Layanan
-          <span
-            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-600"
-            >Laundry</span
-          >
+      <div class="text-center mb-16">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Pilih Layanan Laundry
         </h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-          Berbagai pilihan layanan laundry berkualitas tinggi dengan harga
-          terjangkau untuk semua kebutuhan Anda
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Berbagai pilihan layanan laundry berkualitas dengan harga terjangkau
         </p>
+        <div class="section-divider mt-8"></div>
       </div>
 
       <!-- Services Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        <!-- Sample Service Cards - Replace with Thymeleaf loop -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
         <div
-          class="service-card rounded-3xl p-8 text-center relative group"
+          class="service-card rounded-xl p-6 text-center relative group"
           th:each="layanan, stat : ${listLayanan}"
         >
-          <!-- Service Number Badge -->
+          <!-- Service Number -->
           <div
-            class="absolute -top-4 -right-4 w-10 h-10 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg"
+            class="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-semibold"
           >
             <span th:text="${stat.index + 1}">1</span>
           </div>
 
           <!-- Service Icon -->
           <div
-            class="service-icon w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg"
+            class="service-icon w-16 h-16 rounded-lg flex items-center justify-center mx-auto mb-4"
           >
             <svg
-              class="w-10 h-10 text-white"
+              class="w-8 h-8"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -191,15 +106,15 @@
 
           <!-- Service Name -->
           <h3
-            class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors duration-300"
+            class="text-xl font-semibold text-gray-900 mb-3"
             th:text="${layanan.namaLayanan}"
           >
             Cuci Kering
           </h3>
 
-          <!-- Price Tag -->
+          <!-- Price -->
           <div
-            class="price-tag text-white px-6 py-3 rounded-2xl font-bold text-lg mx-auto inline-block shadow-lg mb-6"
+            class="price-badge text-sm px-4 py-2 rounded-full font-medium inline-block"
           >
             Rp
             <span
@@ -212,26 +127,26 @@
     </main>
 
     <!-- Footer -->
-    <footer
-      class="relative z-10 bg-white/90 backdrop-blur-sm border-t border-blue-100"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <footer class="bg-white border-t border-gray-200">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="text-center">
           <div class="flex items-center justify-center space-x-3 mb-4">
             <div
-              class="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center"
+              class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center"
             >
               <span class="text-white text-sm font-bold">K</span>
             </div>
-            <h3 class="text-lg font-bold text-gray-800">KlinKlin Laundry</h3>
+            <h3 class="text-lg font-semibold text-gray-900">
+              KlinKlin Laundry
+            </h3>
           </div>
-          <p class="text-gray-600 mb-4">
+          <p class="text-gray-600 mb-6">
             Layanan laundry terpercaya untuk kebutuhan Anda
           </p>
-          <div class="flex justify-center space-x-6 text-sm text-gray-500">
-            <span>&copy; 2024 KlinKlin Laundry</span>
-            <span>•</span>
-            <span>Semua hak cipta dilindungi</span>
+          <div class="text-sm text-gray-500">
+            <span
+              >&copy; 2024 KlinKlin Laundry. Semua hak cipta dilindungi.</span
+            >
           </div>
         </div>
       </div>

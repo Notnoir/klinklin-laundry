@@ -224,23 +224,7 @@
           </div>
         </div>
 
-        <!-- Role (1 kolom penuh) -->
-        <div class="mb-6">
-          <label for="role" class="block text-gray-700 text-sm font-medium mb-2"
-            >Role</label
-          >
-          <select
-            id="role"
-            th:field="*{role}"
-            required
-            class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-          >
-            <option value="">Pilih Role</option>
-            <option th:value="ADMIN">Admin</option>
-            <option th:value="KASIR">Kasir</option>
-            <option th:value="PELANGGAN">Pelanggan</option>
-          </select>
-        </div>
+        <!-- Role sudah ditetapkan secara default sebagai PELANGGAN di controller -->
 
         <!-- Submit Button -->
         <button

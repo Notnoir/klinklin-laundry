@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="head">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KLinKlin Laundry</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- <link rel="stylesheet" th:src="@{/img/logo.png}" /> -->
+    <link rel="icon" th:href="@{/img/Logo.png}" type="image/png" />
+
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  </head>
+  <body>
+    <header
+      class="bg-white shadow-sm fixed top-0 left-0 w-full z-50 py-2"
+      th:fragment="navbar"
+    >
+      <div class="container mx-auto flex justify-between items-center px-4">
+        <a href="/kasir/dashboard" class="font-bold text-xl text-blue-600">
+          <img
+            th:src="@{/img/logo.png}"
+            alt="KlinKlin Laundry"
+            class="h-14 mx-16"
+          />
+        </a>
+        <nav class="flex space-x-10">
+          <a
+            href="/pelanggan/dashboard"
+            class="text-lg font-bold text-[#2196F3] hover:text-blue-600"
+            >Dashboard</a
+          >
+          <a
+            href="/pelanggan/reservasi/list"
+            class="text-lg font-bold text-[#2196F3] hover:text-blue-600 flex items-center"
+            >Reservasi
+          </a>
+          <a
+            href="/pelanggan/layanan"
+            class="text-lg font-bold text-[#2196F3] hover:text-blue-600"
+            >Daftar Layanan</a
+          >
+          <a
+            href="/pelanggan/transaksi"
+            class="text-lg font-bold text-[#2196F3] hover:text-blue-600"
+            >Transaksi</a
+          >
+          <a
+            href="/pelanggan/pembayaran"
+            class="text-lg font-bold text-[#2196F3] hover:text-blue-600"
+            >Pembayaran</a
+          >
+        </nav>
+        <div class="flex items-center space-x-4">
+          <form th:action="@{/logout}" method="post" class="inline">
+            <button
+              type="submit"
+              class="bg-red-600 text-lg text-white px-5 py-1 mx-16 rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition-colors duration-200"
+            >
+              Logout
+            </button>
+          </form>
+        </div>
+      </div>
+    </header>
+
+    <script th:fragment="scripts">
+      // Remove sidebar related functions since we're using navbar now
+      function toggleUserDropdown() {
+        const dropdown = document.getElementById("dropdown-user");
+        dropdown.classList.toggle("hidden");
+      }
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (event) {
+        const dropdown = document.getElementById("dropdown-user");
+        const button = event.target.closest('[onclick="toggleUserDropdown()"]');
+
+        if (!button && dropdown && !dropdown.contains(event.target)) {
+          dropdown.classList.add("hidden");
+        }
+      });
+    </script>
+  </body>
+</html>
