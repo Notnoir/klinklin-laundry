@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import LaundryWeb.KlinKlin.dto.UserDTO;
 import LaundryWeb.KlinKlin.model.User;
@@ -36,7 +37,11 @@ public class AuthController {
     private UserRepository userRepository;
 
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(Model model,
+            @RequestParam(value = "registerSuccess", required = false) String registerSuccess) {
+        if (registerSuccess != null) {
+            model.addAttribute("toastMessage", "Registrasi berhasil! Silakan login.");
+        }
         return "auth/login";
     }
 
@@ -57,7 +62,7 @@ public class AuthController {
             model.addAttribute("error", "Email sudah digunakan.");
             return "auth/register";
         }
-        
+
         // Set default role sebagai PELANGGAN
         userDTO.setRole(User.Role.PELANGGAN);
 
